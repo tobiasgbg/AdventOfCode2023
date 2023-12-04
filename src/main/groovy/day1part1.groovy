@@ -21,25 +21,28 @@ treb7uchet
 In this example, the calibration values of these four lines are 12, 38, 15, and 77. Adding these together produces 142.
 
 Consider your entire calibration document. What is the sum of all of the calibration values?
+
  */
 
 static void main(String[] args) {
 
-    String fileContents = new File('../../../input/day1.txt').text
+    List<String> fileContents = new File('../../../input/day1.txt').text.split('\n')
 
-    def total = Day1Part1.sum_calibration_values(fileContents)
-    println("Total ${total}")
+    def totalValue = Day1Part1Trebuchet.sumCalibrationValues(fileContents)
+    println("TotalValue ${totalValue}")
 }
 
-class Day1Part1 {
-    static def sum_calibration_values(document) {
-        int total_sum = 0
-        document.each { line ->
-            def first_digit = line.find( it -> it.isNumber()) ?: 0
-            def last_digit = line.reverse().find( it -> it.isNumber()) ?: 0
+class Day1Part1Trebuchet {
+    static Integer sumCalibrationValues(List<String> document) {
+        document.sum { line ->
+            // Extract the first digit
+            def firstDigit = line.find { it.isNumber() }
 
-            total_sum += (first_digit + last_digit) as int
-        }
-        total_sum
+            // Extract the last digit (search from the end)
+            def lastDigit = line.reverse().find { it.isNumber() }
+
+            // Combine the digits to form a number and convert to integer
+            return (firstDigit + lastDigit) as Integer
+        } as Integer
     }
 }
