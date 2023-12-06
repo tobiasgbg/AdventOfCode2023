@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/day1part1.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/day1part1.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/Day1Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day1Specification.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +72,7 @@
       <command value="gradle clean" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Groovy.day1part1">
     <configuration name="AdventOfCode2023 [assemble]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -115,28 +117,6 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="AdventOfCode2023 [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="clean" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="Day1Specification" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -161,6 +141,30 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="Day1Specification.sum calibration values for document with same first and last digit" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;Day1Specification.sum calibration values for document with same first and last digit&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="day1part1" type="GroovyScriptRunConfiguration" factoryName="Groovy" temporary="true">
       <module name="AdventOfCode2022.main" />
       <setting name="path" value="file://$PROJECT_DIR$/src/main/groovy/day1part1.groovy" />
@@ -174,11 +178,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Groovy.day1part1" />
+        <item itemvalue="Gradle.Day1Specification.sum calibration values for document with same first and last digit" />
         <item itemvalue="Gradle.Day1Specification" />
         <item itemvalue="Gradle.AdventOfCode2023 [build]" />
-        <item itemvalue="Groovy.day1part1" />
         <item itemvalue="Gradle.AdventOfCode2023 [assemble]" />
-        <item itemvalue="Gradle.AdventOfCode2023 [clean]" />
       </list>
     </recent_temporary>
   </component>
@@ -200,6 +204,14 @@
           <url>file://$PROJECT_DIR$/src/main/groovy/day1part1.groovy</url>
           <line>28</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/groovy/day1part1.groovy</url>
+          <line>58</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
