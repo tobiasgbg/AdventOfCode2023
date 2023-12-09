@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/input/day2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/groovy/day2part1.groovy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/groovy/Day2Specification.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="Solve day 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/day2part1.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/day2part1.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/Day2Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day2Specification.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +60,7 @@
   "keyToString": {
     "Gradle.AdventOfCode2023 [assemble].executor": "Run",
     "Gradle.Build AdventOfCode2023.executor": "Run",
-    "Gradle.Day2Specification.executor": "Debug",
+    "Gradle.Day2Specification.executor": "Run",
     "Groovy.day2part1.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -212,7 +210,20 @@
       <option name="presentableId" value="Default" />
       <updated>1701627967418</updated>
     </task>
+    <task id="LOCAL−00001" summary="Solve day 2">
+      <option name="closed" value="true" />
+      <created>1701945696297</created>
+      <option name="number" value="LOCAL−00001" />
+      <option name="presentableId" value="LOCAL−00001" />
+      <updated>1701945696297</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge branch 'main' of https://github.com/tobiasgbg/AdventOfCode2023" />
+    <MESSAGE value="Solve day 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Solve day 2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -232,7 +243,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/groovy/day2part1.groovy</url>
-          <line>47</line>
+          <line>72</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>

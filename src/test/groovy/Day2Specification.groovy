@@ -2,7 +2,7 @@ import spock.lang.Specification
 
 class Day2Specification extends Specification {
 
-    def "check if a game is possible with given cube counts"() {
+    def "get the total sum"() {
         given:
         String input = """Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
         Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
@@ -12,5 +12,17 @@ class Day2Specification extends Specification {
 
         expect:
         Day2Game.getSum(input) == 8
+    }
+
+    def "get the total power"() {
+        given:
+        String input = """Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+        Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+        Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+        Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+        Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"""
+
+        expect:
+        Day2Game.getPower(input) == 2286
     }
 }
