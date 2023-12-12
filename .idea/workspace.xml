@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="Solve day 2">
+      <change afterPath="$PROJECT_DIR$/input/day3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/qodana.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/day3.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/day3ew.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/groovy/Day3Specification.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/day2part1.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/day2part1.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/Day2Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day2Specification.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +30,12 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AdventOfCode2023" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -45,6 +53,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -61,19 +72,50 @@
     "Gradle.AdventOfCode2023 [assemble].executor": "Run",
     "Gradle.Build AdventOfCode2023.executor": "Run",
     "Gradle.Day2Specification.executor": "Run",
+    "Gradle.Day3Specification (1).executor": "Run",
+    "Gradle.Day3Specification.check if valid.executor": "Debug",
+    "Gradle.Day3Specification.executor": "Run",
+    "Gradle.Day3Specification.get the total sum 2.executor": "Run",
     "Groovy.day2part1.executor": "Run",
+    "Groovy.day3.executor": "Run",
+    "Groovy.day3ew.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/meant/OneDrive/Documents/GitHub/AdventOfCode2023",
+    "last_opened_file_path": "C:/Users/meant/OneDrive/Documents/GitHub/AdventOfCode2023/src/main/groovy",
     "project.structure.last.edited": "SDKs",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
+  <component name="QodanaHighlightedReportService">
+    <option name="localRunNotPublishedPersistedInfo">
+      <LocalReportPersistedInfo>
+        <option name="path" value="C:\Users\meant\AppData\Local\Temp\qodana_output\qodana.sarif.json" />
+        <option name="reportGuid" value="cc43cb6d-d38b-4b3c-b87b-610abe51f38b" />
+        <option name="reportName" value="AdventOfCode2023/qodana/2023-12-10" />
+      </LocalReportPersistedInfo>
+    </option>
+  </component>
+  <component name="QodanaIsSelectedPersistenceService">
+    <option name="selectedOrLoading" value="true" />
+  </component>
+  <component name="QodanaReportsService">
+    <option name="descriptions">
+      <ReportDescription localRun="true" path="C:\Users\meant\AppData\Local\Temp\qodana_output\qodana.sarif.json" reportGuid="cc43cb6d-d38b-4b3c-b87b-610abe51f38b" reportId="AdventOfCode2023/qodana/2023-12-10" />
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\meant\OneDrive\Documents\GitHub\AdventOfCode2023\src\main\groovy" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+  </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="gradle build" />
@@ -125,7 +167,7 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Day1Specification" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Day3Specification" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -138,7 +180,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;Day1Specification&quot;" />
+            <option value="&quot;Day3Specification&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -149,7 +191,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Day1Specification.sum calibration values for document with same first and last digit" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Day3Specification.check if valid" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -162,7 +204,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;Day1Specification.sum calibration values for document with same first and last digit&quot;" />
+            <option value="&quot;Day3Specification.check if valid&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -173,24 +215,37 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="day1part1" type="GroovyScriptRunConfiguration" factoryName="Groovy" temporary="true">
-      <module name="AdventOfCode2022.main" />
-      <setting name="path" value="file://$PROJECT_DIR$/src/main/groovy/day1part1.groovy" />
-      <setting name="vmparams" value="" />
-      <setting name="params" value="" />
-      <setting name="workDir" value="file://$PROJECT_DIR$/src/main/groovy" />
-      <setting name="debug" value="false" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="Day3Specification.get the total sum 2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;Day3Specification.get the total sum 2&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Day3Specification" />
+        <item itemvalue="Gradle.Day3Specification.get the total sum 2" />
+        <item itemvalue="Gradle.Day3Specification.check if valid" />
         <item itemvalue="Gradle.AdventOfCode2023 [assemble]" />
         <item itemvalue="Gradle.AdventOfCode2023 [build]" />
-        <item itemvalue="Groovy.day1part1" />
-        <item itemvalue="Gradle.Day1Specification.sum calibration values for document with same first and last digit" />
-        <item itemvalue="Gradle.Day1Specification" />
       </list>
     </recent_temporary>
   </component>
@@ -245,6 +300,18 @@
           <url>file://$PROJECT_DIR$/src/main/groovy/day2part1.groovy</url>
           <line>72</line>
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="number == &quot;839&quot;" language="Groovy" />
+          <url>file://$PROJECT_DIR$/src/main/groovy/day3.groovy</url>
+          <line>52</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="column == 20" language="Groovy" />
+          <url>file://$PROJECT_DIR$/src/main/groovy/day3.groovy</url>
+          <line>66</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
