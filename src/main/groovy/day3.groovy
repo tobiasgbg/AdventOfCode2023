@@ -32,7 +32,37 @@ Here is an example engine schematic:
 
 */
 
+
+class PartNumber {
+    int number
+    Coordinate coordinate
+
+    PartNumber(int number, int row, int column) {
+        this.number = number
+        this.coordinate = new Coordinate(row, column)
+    }
+}
+
+class Gear {
+    Coordinate coordinate
+
+    Gear(Integer row, Integer column) {
+        this.coordinate = new Coordinate(row, column)
+    }
+}
+
+class Coordinate {
+    int row
+    int column
+
+    Coordinate(int row, int column) {
+        this.row = row
+        this.column = column
+    }
+}
+
 class Day3Gondola {
+
     static int getSum(String input) {
         int totalSum = 0;
         List<String> lines = input.split('\n');
@@ -50,7 +80,6 @@ class Day3Gondola {
                 } else {
                     if (valid) {
                         totalSum += (number as Integer);
-                        println(number)
                         valid = false;
                     }
                     number = "";
@@ -83,13 +112,85 @@ class Day3Gondola {
         }
         false
     }
+
+    static int getSumGearRatios(String input) {
+        List<String> lines = input.split('\n');
+
+        List<Gear> gears = []
+        List<PartNumber> partNumbers = []
+
+        //Get gears and part numbers
+        for (int row = 0; row < lines.size(); row++) {
+            String number = ""
+            for (int column = 0; column < lines[row].length(); column++) {
+                String character = lines[row][column];
+                if (character == "*") {
+                    gears.add(new Gear(row, column))
+                } else if (character.isNumber()) {
+                    number += character
+                }
+
+                if (!number.isEmpty() && !character.isNumber()) {
+                    partNumbers.add(new PartNumber(number as int, row, column - number.length()))
+                    number = ""
+                }
+            }
+        }
+
+        int totalSum = 0;
+        // Loop through gears
+        for (gear in gears) {
+            // For each gear get a list of part numbers close
+            List<PartNumber> adjacentPartNumbers = getAdjacentPartNumbers(gear, partNumbers)
+            // If there are 2, multiply them and add to total sum
+            if (adjacentPartNumbers.size() == 2) {
+                totalSum += adjacentPartNumbers[0].number * adjacentPartNumbers[1].number
+            }
+        }
+
+        return totalSum;
+    }
+
+    static List<PartNumber> getAdjacentPartNumbers(Gear gear, List<PartNumber> partNumbers) {
+        List<PartNumber> adjacentPartNumbers = []
+
+        for (PartNumber partNumber in partNumbers) {
+            if (isAdjacent(partNumber, gear))
+                adjacentPartNumbers.add(partNumber)
+        }
+
+        adjacentPartNumbers
+    }
+
+    static boolean isAdjacent(PartNumber partNumber, Gear gear) {
+        for (int column = partNumber.coordinate.column; column < partNumber.coordinate.column + partNumber.number.toString().length(); column++) {
+            double distance = Math.sqrt(Math.pow(gear.coordinate.column - column, 2) + Math.pow(gear.coordinate.row - partNumber.coordinate.row, 2))
+            if (distance < 2)
+                return true
+        }
+
+        false
+    }
 }
 
 static void main(String[] args) {
     try {
-        String fileContents = new File('../../../input/day3.txt').getText('UTF-8')
+        // Specify the file path
+        String filePath = "../../../input/day3.txt"
+
+        // Create a File object
+        File file = new File(filePath)
+
+        // Read file contents into a List of Strings
+        List<String> lines = file.readLines()
+        String fileContents = lines.join('\n')
+
         def sum = Day3Gondola.getSum(fileContents)
         println("Sum: ${sum}")
+
+        def sumGear = Day3Gondola.getSumGearRatios(fileContents)
+        println("Sum gears: ${sumGear}")
+
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
     } catch (IOException e) {

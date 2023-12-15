@@ -196,6 +196,24 @@ class Day3Specification extends Specification {
         Day3Gondola.getSum(input) == 556057
     }
 
+    def "get the sum of gear ratios"() {
+        given:
+        String input = """467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...\$.*....
+.664.598.."""
+
+        expect:
+        Day3Gondola gondola = new Day3Gondola()
+        gondola.getSumGearRatios(input) == 467835
+    }
+
     def "check if pos valid false 1"() {
         given:
         String input = """467..114..
@@ -295,5 +313,74 @@ class Day3Specification extends Specification {
         expect:
         List<String> lines = input.split('\n')
         Day3Gondola.isValid(2, 3, lines)
+    }
+
+    def "get adjacent part numbers 1"() {
+        given:
+        Gear gear = new Gear(0, 0)
+        List<PartNumber> partNumbers = []
+        partNumbers.add(new PartNumber(3, 0, 1))
+
+        expect:
+        Day3Gondola gondola = new Day3Gondola()
+        gondola.getAdjacentPartNumbers(gear, partNumbers).size() == 1
+    }
+
+    def "get adjacent part numbers 2"() {
+        given:
+        Gear gear = new Gear(0, 0)
+        List<PartNumber> partNumbers = []
+        partNumbers.add(new PartNumber(3, 0, 1))
+        partNumbers.add(new PartNumber(4, 0, 3))
+        partNumbers.add(new PartNumber(4, 2, 3))
+
+        expect:
+        Day3Gondola gondola = new Day3Gondola()
+        gondola.getAdjacentPartNumbers(gear, partNumbers).size() == 1
+    }
+
+    def "is adjacent 1"() {
+        given:
+        Gear gear = new Gear(0, 0)
+        PartNumber partNumber = new PartNumber(3, 0, 1)
+
+        expect:
+        Day3Gondola.isAdjacent(partNumber, gear)
+    }
+
+    def "is adjacent 2"() {
+        given:
+        Gear gear = new Gear(-1, -1)
+        PartNumber partNumber = new PartNumber(3, 0, 0)
+
+        expect:
+        Day3Gondola.isAdjacent(partNumber, gear)
+    }
+
+    def "is adjacent 3"() {
+        given:
+        Gear gear = new Gear(0, 0)
+        PartNumber partNumber = new PartNumber(3, 0, 2)
+
+        expect:
+        !Day3Gondola.isAdjacent(partNumber, gear)
+    }
+
+    def "is adjacent 4"() {
+        given:
+        Gear gear = new Gear(0, 2)
+        PartNumber partNumber = new PartNumber(1, 0, 0)
+
+        expect:
+        !Day3Gondola.isAdjacent(partNumber, gear)
+    }
+
+    def "is adjacent 5"() {
+        given:
+        Gear gear = new Gear(0, 2)
+        PartNumber partNumber = new PartNumber(12, 0, 0)
+
+        expect:
+        Day3Gondola.isAdjacent(partNumber, gear)
     }
 }
