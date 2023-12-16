@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="Solve day 2">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input/day4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/day4.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/groovy/Day4Specification.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/day3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/day3.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/day3.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/day3.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/Day3Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day3Specification.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/day3ew.groovy" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,16 +95,20 @@
     "Gradle.Day3Specification.get the total sum 2.executor": "Run",
     "Gradle.Day3Specification.is adjacent 4.executor": "Run",
     "Gradle.Day3Specification.is adjacent.executor": "Debug",
+    "Gradle.Day4Specification.executor": "Run",
     "Gradle.Tests in 'AdventOfCode2023.test'.executor": "Run",
+    "Groovy.Day4Specification.executor": "Run",
     "Groovy.day2part1.executor": "Run",
     "Groovy.day3.executor": "Run",
     "Groovy.day3ew.executor": "Run",
+    "Groovy.day4.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/meant/OneDrive/Documents/GitHub/AdventOfCode2023/src/main/groovy",
+    "last_opened_file_path": "C:/Users/meant/OneDrive/Documents/GitHub/AdventOfCode2023/src/test/groovy",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -120,6 +125,7 @@
       <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\meant\OneDrive\Documents\GitHub\AdventOfCode2023\src\test\groovy" />
       <recent name="C:\Users\meant\OneDrive\Documents\GitHub\AdventOfCode2023\src\main\groovy" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -341,6 +347,11 @@
           <url>file://$PROJECT_DIR$/src/main/groovy/day3.groovy</url>
           <line>146</line>
           <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/groovy/day4.groovy</url>
+          <line>11</line>
+          <option name="timeStamp" value="53" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
