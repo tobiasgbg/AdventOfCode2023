@@ -14,14 +14,15 @@ class Card {
 
 class Day4Raffle {
     static int getWorth(Card card) {
-        def winningNumbers = card.haveNumbers.findAll {it in card.winNumbers}
+        def winningNumbers = card.haveNumbers.findAll { it in card.winNumbers }
         1 * Math.pow(2, winningNumbers.size() - 1)
     }
+
     static int getTotalCards(List<Card> cards) {
         List<Card> originalCards = cards.collect()
         int totalCards = originalCards.size()
         for (int i = 0; i < cards.size(); i++) {
-            def winningNumbers = cards[i].haveNumbers.findAll {it in cards[i].winNumbers}
+            def winningNumbers = cards[i].haveNumbers.findAll { it in cards[i].winNumbers }
             totalCards += winningNumbers.size()
             for (int j = cards[i].number; j < cards[i].number + winningNumbers.size(); j++)
                 cards.add(originalCards[j])

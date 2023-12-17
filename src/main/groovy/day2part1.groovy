@@ -1,5 +1,3 @@
-import java.util.spi.AbstractResourceBundleProvider
-
 /*
 --- Day 2: Cube Conundrum ---
 You're launched high into the atmosphere! The apex of your trajectory just barely reaches the surface of a large island floating in the sky. You gently land in a fluffy pile of leaves. It's quite cold, but you don't see much snow. An Elf runs over to greet you.
@@ -73,7 +71,7 @@ class Day2Game {
         gameLines.each { gameLine ->
             boolean possible = true
             List<String> parts = gameLine.trim().split(':')
-            parts[1]?.split(';').each {round ->
+            parts[1]?.split(';').each { round ->
                 for (reveal in round.split(',')) {
                     List<String> colour = reveal.trim().split(" ")
                     if (colour[0] as Integer > colorToMaxMap.get(colour[1])) {
@@ -102,7 +100,7 @@ class Day2Game {
                     'red': 0, 'green': 0, 'blue': 0
             ]
             List<String> parts = gameLine.trim().split(':')
-            parts[1]?.split(';').each {round ->
+            parts[1]?.split(';').each { round ->
                 for (reveal in round.split(',')) {
                     List<String> colour = reveal.trim().split(" ")
                     if (colour[0] as Integer > colorToMaxMap.get(colour[1])) {

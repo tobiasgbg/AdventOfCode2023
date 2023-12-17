@@ -1,5 +1,3 @@
-import groovy.io.FileType
-
 /*
 --- Day 3: Gear Ratios ---
         You and the Elf eventually reach a gondola lift station; he says the gondola lift will take you up to the water source, but this is as far as he can bring you. You go inside.
@@ -64,32 +62,32 @@ class Coordinate {
 class Day3Gondola {
 
     static int getSum(String input) {
-        int totalSum = 0;
-        List<String> lines = input.split('\n');
+        int totalSum = 0
+        List<String> lines = input.split('\n')
 
         for (int row = 0; row <= lines.size() - 1; row++) {
-            String number = "";
-            Boolean valid = false;
+            String number = ""
+            Boolean valid = false
             for (int column = 0; column <= lines[row].length() - 1; column++) {
-                String character = lines[row][column];
+                String character = lines[row][column]
                 if (character.isNumber()) {
-                    number += character;
+                    number += character
                     if (isValid(row, column, lines) && !valid) {
-                        valid = true;
+                        valid = true
                     }
                 } else {
                     if (valid) {
-                        totalSum += (number as Integer);
-                        valid = false;
+                        totalSum += (number as Integer)
+                        valid = false
                     }
-                    number = "";
+                    number = ""
                 }
             }
             if (!number.isEmpty() && valid) {
-                totalSum += number as Integer;
+                totalSum += number as Integer
             }
         }
-        return totalSum;
+        return totalSum
     }
 
     static boolean isValid(int row, int column, List<String> lines) {
@@ -97,15 +95,15 @@ class Day3Gondola {
         for (rowOffset in positions) {
             for (columnOffset in positions) {
                 def ch = "."
-                    if (row + rowOffset < 0)
-                        continue
-                    else if (column + columnOffset < 0)
-                        continue
-                    else if (row + rowOffset >= lines.size())
-                        continue
-                    else if (column + columnOffset >= lines[row + rowOffset].size())
-                        continue
-                    ch = lines[row + rowOffset][column + columnOffset]
+                if (row + rowOffset < 0)
+                    continue
+                else if (column + columnOffset < 0)
+                    continue
+                else if (row + rowOffset >= lines.size())
+                    continue
+                else if (column + columnOffset >= lines[row + rowOffset].size())
+                    continue
+                ch = lines[row + rowOffset][column + columnOffset]
                 if (!ch.isNumber() && ch != ".")
                     return true
             }
@@ -114,7 +112,7 @@ class Day3Gondola {
     }
 
     static int getSumGearRatios(String input) {
-        List<String> lines = input.split('\n');
+        List<String> lines = input.split('\n')
 
         List<Gear> gears = []
         List<PartNumber> partNumbers = []
@@ -123,7 +121,7 @@ class Day3Gondola {
         for (int row = 0; row < lines.size(); row++) {
             String number = ""
             for (int column = 0; column < lines[row].length(); column++) {
-                String character = lines[row][column];
+                String character = lines[row][column]
                 if (character == "*") {
                     gears.add(new Gear(row, column))
                 } else if (character.isNumber()) {
@@ -137,7 +135,7 @@ class Day3Gondola {
             }
         }
 
-        int totalSum = 0;
+        int totalSum = 0
         // Loop through gears
         for (gear in gears) {
             // For each gear get a list of part numbers close
@@ -148,7 +146,7 @@ class Day3Gondola {
             }
         }
 
-        return totalSum;
+        return totalSum
     }
 
     static List<PartNumber> getAdjacentPartNumbers(Gear gear, List<PartNumber> partNumbers) {
