@@ -41,3 +41,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 /htmlReport/
+.idea/workspace.xml
