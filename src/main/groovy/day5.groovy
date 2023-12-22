@@ -100,6 +100,12 @@ class Almanac {
     List<Long> seeds = []
     List<Category> categories = []
 
+    void sortAllMappings() {
+        for (Category category : categories) {
+            category.sortSeedMaps();
+        }
+    }
+
     Almanac(String input) {
         List<String> lines = input.split("\\r\\n|\\n|\\r")
         this.seeds = lines[0].split(":")[1].trim().split(" ").collect { it.toLong() }
@@ -116,8 +122,132 @@ class Almanac {
     }
 }
 
+class Interval {
+    Long start;
+    Long end;
+
+    Interval(Long start, Long end) {
+        this.start = start;
+        this.end = end;
+    }
+}
+
+class RangeMapper {
+    Almanac almanac;
+
+    RangeMapper(Almanac almanac) {
+        this.almanac = almanac;
+        almanac.sortAllMappings();
+    }
+
+    Long getLowestLocationNumber() {
+        List<Interval> ranges = seedRangesToInterval();
+        for (Category category : almanac.categories) {
+            ranges = mapRangesThroughCategory(ranges, category);
+        }
+        return findLowestLocationNumber(ranges);
+    }
+
+    List<Interval> seedRangesToInterval() {
+        List<Interval> intervals = []
+        for (int i = 0; i < almanac.seeds.size(); i += 2) {
+            Long rangeStart = almanac.seeds[i];
+            Long rangeLength = almanac.seeds[i + 1];
+            Long rangeEnd = rangeStart + rangeLength;
+
+            intervals.add(new Interval(rangeStart, rangeEnd));
+        }
+        return intervals;
+    }
+
+    static List<Interval> mapRangesThroughCategory(List<Interval> seedRanges, Category category) {
+        List<Interval> mappedRanges = new ArrayList<>();
+
+        for (Interval seedRange : seedRanges) {
+            List<Interval> partialMappedRanges = mapSingleRangeThroughCategory(seedRange, category);
+            mappedRanges.addAll(partialMappedRanges);
+        }
+
+        return mappedRanges;
+    }
+
+    static List<Interval> mapSingleRangeThroughCategory(Interval seedRange, Category category) {
+        List<Interval> partialMappedRanges = new ArrayList<>();
+
+        for (SeedMap seedMap : category.seedMaps) {
+            if (overlaps(seedRange, seedMap)) {
+                Interval overlappingRange = getOverlappingRange(seedRange, seedMap);
+                Interval mappedRange = mapRange(overlappingRange, seedMap);
+                partialMappedRanges.add(mappedRange);
+
+                seedRange = updateRemainingRange(seedRange, overlappingRange);
+                if (seedRange == null) {
+                    break; // Fully mapped, break out of the loop
+                }
+            }
+        }
+
+        // If there is any unmapped part left in the seed range
+        if (seedRange != null) {
+            partialMappedRanges.add(seedRange); // Add it as is
+        }
+
+        return partialMappedRanges;
+    }
+
+    static boolean overlaps(Interval range, SeedMap seedMap) {
+        return range.start < seedMap.sourceRangeStart + seedMap.rangeLength &&
+                range.end > seedMap.sourceRangeStart;
+    }
+
+    static Interval getOverlappingRange(Interval range, SeedMap seedMap) {
+        Long start = Math.max(range.start, seedMap.sourceRangeStart);
+        Long end = Math.min(range.end, seedMap.sourceRangeStart + seedMap.rangeLength);
+        return new Interval(start, end);
+    }
+
+    static Interval mapRange(Interval range, SeedMap seedMap) {
+        Long offset = range.start - seedMap.sourceRangeStart;
+        Long mappedStart = seedMap.destinationRangeStart + offset;
+        Long mappedEnd = mappedStart + (range.end - range.start);
+        return new Interval(mappedStart, mappedEnd);
+    }
+
+    static Interval updateRemainingRange(Interval originalRange, Interval mappedRange) {
+        if (originalRange.end > mappedRange.end) {
+            return new Interval(mappedRange.end, originalRange.end);
+        }
+        return null; // Indicates the original range is fully mapped
+    }
+
+    static Long findLowestLocationNumber(List<Interval> ranges) {
+        if (ranges == null || ranges.isEmpty()) {
+            return null; // or an appropriate default value or throw an exception
+        }
+
+        Long lowestLocationNumber = Long.MAX_VALUE;
+        for (Interval range : ranges) {
+            if (range.start < lowestLocationNumber) {
+                lowestLocationNumber = range.start;
+            }
+        }
+
+        return lowestLocationNumber;
+    }
+}
+
+
 class Category {
     List<SeedMap> seedMaps = []
+
+    void sortSeedMaps() {
+        Collections.sort(seedMaps, new Comparator<SeedMap>() {
+            @Override
+            int compare(SeedMap map1, SeedMap map2) {
+                return map1.sourceRangeStart <=> map2.sourceRangeStart;
+            }
+        });
+    }
 }
 
 class SeedMap {
@@ -146,31 +276,46 @@ class Day5Almanac {
         result
     }
 
-    static Long getLocationNumber(Long seed, List<Category> categories ) {
+    static Long getLowestLocationNumberRange(Almanac almanac) {
+        Long result = Long.MAX_VALUE
+        for (int i = 0; ; i++) {
+            Long location = getLocationNumber(i, almanac.categories.reverse(), true)
+            for (int j = 0; j < almanac.seeds.size() - 1; j+=2) {
+                if (location in almanac.seeds[j]..almanac.seeds[j]+almanac.seeds[j+1]) {
+                    return i
+                }
+            }
+        }
+        result
+    }
+
+    static Long getLocationNumber(Long seed, List<Category> categories, boolean reverse = false) {
         Long result = seed
         categories.each {category ->
-            println("Location number for seed ${seed} and category ${category} is ${result}")
-            result = getLocationNumber(result, category)
+            result = getLocationNumber(result, category, reverse)
         }
 
         result
     }
 
-    static Long getLocationNumber(Long seed, Category category) {
+    static Long getLocationNumber(Long seed, Category category, boolean reverse = false) {
         for (SeedMap seedMap : category.seedMaps) {
+
+            Long sourceRangeStart = reverse ? seedMap.destinationRangeStart : seedMap.sourceRangeStart
+            Long destinationRangeStart = reverse ? seedMap.sourceRangeStart : seedMap.destinationRangeStart
+
             // Check if the seed is within the source range
-            if (seed >= seedMap.sourceRangeStart && seed < seedMap.sourceRangeStart + seedMap.rangeLength) {
+            if (seed >= sourceRangeStart && seed < sourceRangeStart + seedMap.rangeLength) {
                 // Calculate the offset from the start of the source range
-                Long offset = seed - seedMap.sourceRangeStart;
+                Long offset = seed - sourceRangeStart;
 
                 // Apply the same offset to the destination range
-                return seedMap.destinationRangeStart + offset;
+                return destinationRangeStart + offset;
             }
         }
         // If the seed is not in any map, it maps to itself
         return seed;
     }
-
 }
 
 static void main(String[] args) {
@@ -186,6 +331,12 @@ static void main(String[] args) {
         Long lowestLocationNumber = Day5Almanac.getLowestLocationNumber(almanac)
 
         println("Lowest location number: ${lowestLocationNumber}")
+
+        RangeMapper rangeMapper = new RangeMapper(almanac)
+
+        Long lowestLocationNumberRange = rangeMapper.getLowestLocationNumber()
+
+        println("Lowest location number range: ${lowestLocationNumberRange}")
 
 
     } catch (FileNotFoundException e) {

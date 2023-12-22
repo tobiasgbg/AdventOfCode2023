@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="Solve day 2">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/day5.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/day5.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/Day5Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day5Specification.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +87,7 @@
     "Gradle.Day3Specification.check if valid.executor": "Debug",
     "Gradle.Day3Specification.executor": "Run",
     "Gradle.Day3Specification.get adjacent part numbers 2.executor": "Run",
-    "Gradle.Day3Specification.get adjacent part numbers.executor": "Run",
+    "Gradle.Day3Specification.get adjacent part numbers.executor": "Debug",
     "Gradle.Day3Specification.get number 2.executor": "Run",
     "Gradle.Day3Specification.get the sum of gear ratios.executor": "Run",
     "Gradle.Day3Specification.get the total sum 2.executor": "Run",
@@ -93,7 +96,8 @@
     "Gradle.Day4Specification.executor": "Run",
     "Gradle.Day5Specification.executor": "Run",
     "Gradle.Day5Specification.get location number for category.executor": "Run",
-    "Gradle.Day5Specification.get lowest location number.executor": "Run",
+    "Gradle.Day5Specification.get lowest location number range.executor": "Debug",
+    "Gradle.Day5Specification.get lowest location number.executor": "Debug",
     "Gradle.Tests in 'AdventOfCode2023.test'.executor": "Run",
     "Groovy.Day4Specification.executor": "Run",
     "Groovy.day2part1.executor": "Run",
@@ -210,30 +214,6 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Day3Specification.is adjacent 4" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;Day3Specification.is adjacent 4&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="Day5Specification.get location number for category" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -248,6 +228,30 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;Day5Specification.get location number for category&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="Day5Specification.get lowest location number range" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;Day5Specification.get lowest location number range&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -284,11 +288,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Day5Specification.get location number for category" />
+        <item itemvalue="Gradle.Day5Specification.get lowest location number range" />
         <item itemvalue="Gradle.Day5Specification.get lowest location number" />
+        <item itemvalue="Gradle.Day5Specification.get location number for category" />
         <item itemvalue="Gradle.Day3Specification.get the sum of gear ratios" />
         <item itemvalue="Gradle.Day3Specification.get adjacent part numbers 2" />
-        <item itemvalue="Gradle.Day3Specification.is adjacent 4" />
       </list>
     </recent_temporary>
   </component>
@@ -357,23 +361,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/groovy/day5.groovy</url>
-          <line>185</line>
-          <option name="timeStamp" value="81" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/groovy/Day5Specification.groovy</url>
-          <line>25</line>
-          <option name="timeStamp" value="82" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/groovy/Day5Specification.groovy</url>
-          <line>37</line>
-          <option name="timeStamp" value="83" />
+          <line>250</line>
+          <option name="timeStamp" value="92" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/groovy/day5.groovy</url>
-          <line>120</line>
-          <option name="timeStamp" value="92" />
+          <line>284</line>
+          <option name="timeStamp" value="106" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
@@ -384,6 +378,7 @@
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="PartNumber" memberName="coordinate" />
+        <PinnedItemInfo parentTag="Category" memberName="seedMaps" />
       </pinned-members>
     </pin-to-top-manager>
   </component>
