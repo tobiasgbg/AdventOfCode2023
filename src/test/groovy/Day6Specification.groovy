@@ -22,7 +22,7 @@ Distance:  9  40  200"""
         competition.races[0].time == 7
     }
 
-    def "get sum"() {
+    def "get sum 1"() {
         given:
         String input = """Time:      7  15   30
 Distance:  9  40  200"""
@@ -30,6 +30,16 @@ Distance:  9  40  200"""
 
         expect:
         competition.getSum() == 288
+    }
+
+    def "get sum 2"() {
+        given:
+        String input = """Time:      7  15   30
+Distance:  9  40  200"""
+        Competition competition = new Competition(input, false)
+
+        expect:
+        competition.getSum() == 71503
     }
 
     def "get solutions 1"() {

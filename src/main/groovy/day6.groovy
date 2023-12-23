@@ -44,31 +44,39 @@ Determine the number of ways you could beat the record in each race. What do you
 class Competition {
     List<Race> races = []
 
-    Competition(String input) {
+    Competition(String input, boolean multipleRaces = true) {
         List<String> lines = input.split("\\r\\n|\\n|\\r")
 
-        for (int i = 0; i < lines.size(); i++) {
+        for (Long i = 0; i < lines.size(); i++) {
             // Remove non-numeric characters
             String numbersOnly = lines[i].replaceAll("[^\\d\\s]", "").trim()
 
             // Split the string by spaces
             String[] numbersArray = numbersOnly.split("\\s+")
 
-            // Convert to list of integers
-            List<Integer> numbersList = numbersArray.collect { it.toInteger() }
+            if (multipleRaces) {
+                // Convert to list of Longs
+                List<Long> numbersList = numbersArray.collect { it.toLong() }
 
-            for (int j = 0; j < numbersList.size(); j++) {
+                for (Long j = 0; j < numbersList.size(); j++) {
+                    if (i == 0) {
+                        this.races[j] = new Race(numbersList[j], 0)
+                    } else {
+                        this.races[j].distance = numbersList[j]
+                    }
+                }
+            } else {
                 if (i == 0) {
-                    this.races[j] = new Race(numbersList[j], 0)
+                    this.races[0] = new Race(numbersArray.join("") as Long, 0)
                 } else {
-                    this.races[j].distance = numbersList[j]
+                    this.races[0].distance = numbersArray.join("") as Long
                 }
             }
         }
     }
 
-    Integer getSum() {
-        Integer sum = 1
+    Long getSum() {
+        Long sum = 1
         for (race in races) {
             sum *= race.getNoSolutions()
         }
@@ -78,10 +86,10 @@ class Competition {
 }
 
 class Race {
-    int time
-    int distance
+    Long time
+    Long distance
 
-    Race(int time, int distance) {
+    Race(Long time, Long distance) {
         this.time = time;
         this.distance = distance;
     }
@@ -96,7 +104,7 @@ class Race {
         noSolutions
     }
 
-    Integer getDistance(int timePressed) {
+    Long getDistance(Long timePressed) {
         timePressed * (time - timePressed)
     }
 }
@@ -111,9 +119,15 @@ static void main(String[] args) {
 
         Competition competition = new Competition(file.text)
 
-        Integer sum = competition.getSum()
+        Long sum = competition.getSum()
 
         println("Sum: ${sum}")
+
+        Competition competition2 = new Competition(file.text, false)
+
+        Long sum2 = competition2.getSum()
+
+        println("Sum long race: ${sum2}")
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
     } catch (IOException e) {
