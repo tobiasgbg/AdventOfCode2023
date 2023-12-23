@@ -123,8 +123,8 @@ class Almanac {
 }
 
 class Interval {
-    Long start;
-    Long end;
+    Long start
+    Long end
 
     Interval(Long start, Long end) {
         this.start = start;
@@ -151,9 +151,9 @@ class RangeMapper {
     List<Interval> seedRangesToInterval() {
         List<Interval> intervals = []
         for (int i = 0; i < almanac.seeds.size(); i += 2) {
-            Long rangeStart = almanac.seeds[i];
-            Long rangeLength = almanac.seeds[i + 1];
-            Long rangeEnd = rangeStart + rangeLength;
+            Long rangeStart = almanac.seeds[i]
+            Long rangeLength = almanac.seeds[i + 1]
+            Long rangeEnd = rangeStart + rangeLength
 
             intervals.add(new Interval(rangeStart, rangeEnd));
         }
