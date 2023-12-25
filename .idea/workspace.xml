@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="Solve day 2">
+      <change afterPath="$PROJECT_DIR$/input/day7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/day7.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/groovy/Day7Specification.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/day6.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/day6.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/groovy/Day6Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day6Specification.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,6 +102,7 @@
     "Gradle.Day6Specification.executor": "Run",
     "Gradle.Day6Specification.get races.executor": "Debug",
     "Gradle.Day6Specification.get sum 2.executor": "Debug",
+    "Gradle.Day7Specification.executor": "Run",
     "Gradle.Tests in 'AdventOfCode2023.test'.executor": "Run",
     "Groovy.Day4Specification.executor": "Run",
     "Groovy.day2part1.executor": "Run",
@@ -108,6 +111,7 @@
     "Groovy.day4.executor": "Run",
     "Groovy.day5.executor": "Run",
     "Groovy.day6.executor": "Run",
+    "Groovy.day7.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -374,13 +378,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/groovy/Day6Specification.groovy</url>
-          <line>11</line>
+          <line>15</line>
           <option name="timeStamp" value="108" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/groovy/day6.groovy</url>
           <line>107</line>
           <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/groovy/Day7Specification.groovy</url>
+          <line>28</line>
+          <option name="timeStamp" value="113" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
