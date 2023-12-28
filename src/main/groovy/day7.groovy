@@ -1,5 +1,3 @@
-import javax.print.DocFlavor
-
 /*--- Day 7: Camel Cards ---
 Your all-expenses-paid trip turns out to be a one-way, five-minute ride in an airship. (At least it's a cool airship!) It drops you off at the edge of a vast desert and descends back to Island Island.
 
@@ -51,6 +49,31 @@ T55J5 and QQQJA are both three of a kind. QQQJA has a stronger first card, so it
 Now, you can determine the total winnings of this set of hands by adding up the result of multiplying each hand's bid with its rank (765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5). So the total winnings in this example are 6440.
 
 Find the rank of every hand in your set. What are the total winnings?
+
+Your puzzle answer was 248422077.
+
+The first half of this puzzle is complete! It provides one gold star: *
+
+--- Part Two ---
+To make things a little more interesting, the Elf introduces one additional rule. Now, J cards are jokers - wildcards that can act like whatever card would make the hand the strongest type possible.
+
+To balance this, J cards are now the weakest individual cards, weaker even than 2. The other cards stay in the same order: A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J.
+
+J cards can pretend to be whatever card is best for the purpose of determining hand type; for example, QJJQ2 is now considered four of a kind. However, for the purpose of breaking ties between two hands of the same type, J is always treated as J, not the card it's pretending to be: JKKK2 is weaker than QQQQ2 because J is weaker than Q.
+
+Now, the above example goes very differently:
+
+32T3K 765
+T55J5 684
+KK677 28
+KTJJT 220
+QQQJA 483
+32T3K is still the only one pair; it doesn't contain any jokers, so its strength doesn't increase.
+KK677 is now the only two pair, making it the second-weakest hand.
+T55J5, KTJJT, and QQQJA are now all four of a kind! T55J5 gets rank 3, QQQJA gets rank 4, and KTJJT gets rank 5.
+With the new joker rule, the total winnings in this example are 5905.
+
+Using the new joker rule, find the rank of every hand in your set. What are the new total winnings?
  */
 
 class CamelCards {
@@ -65,26 +88,17 @@ class CamelCards {
         winnings
     }
 
-    CamelCards(String input) {
+    CamelCards(String input, boolean useJoker = false) {
         List<String> lines = input.split("\\r\\n|\\n|\\r")
         for (line in lines) {
             List<String> parts = line.split(" ")
-            hands.add(new Hand(parts[0], parts[1] as Integer))
+            hands.add(new Hand(parts[0], parts[1] as Integer, useJoker))
         }
     }
-}
 
-class Hand implements Comparable<Hand> {
-    String cards
-    Integer bid
-
-    Hand(String cards, Integer bid){
-        this.cards = cards
-        this.bid = bid
-    }
-
-    int getValue() {
+    static int getValue(String cards) {
         HashMap<Character, Integer> cardMap = new HashMap<Character, Integer>()
+
         for (Character card in (cards as List<Character>)) {
             cardMap[card] = cardMap[card] ? cardMap[card] + 1 : 1
         }
@@ -110,22 +124,57 @@ class Hand implements Comparable<Hand> {
         } else {
             return 4 // High card
         }
+
+        return 3
+    }
+}
+
+class Hand implements Comparable<Hand> {
+    String cardsBeforeJoker
+    String cards
+    Integer bid
+    List<Character> types = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'] as List<Character>
+
+    Hand(String cards, Integer bid, boolean useJoker){
+        this.cardsBeforeJoker = cards
+        this.cards = cards
+        this.bid = bid
+        if (useJoker)
+            applyJoker()
+    }
+
+    def applyJoker() {
+        // Change value of Joker
+        types.remove("J")
+        types.add("J")
+
+        int bestValue = 0
+        String bestCard = 'A'
+        for (card in cards) {
+            String newCards = this.cards.replace('J', card)
+            int value = CamelCards.getValue(newCards)
+            if (value > bestValue && card != 'J') {
+                bestCard = card
+                bestValue = value
+            }
+        }
+
+        // Replace joker
+        this.cards = this.cards.replace('J', bestCard)
     }
 
     @Override
     int compareTo(Hand other) {
 
-        List<Character> types = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'] as List<Character>
-
-        int thisValue = getValue()
-        int otherValue = other.getValue()
+        int thisValue = CamelCards.getValue(this.cards)
+        int otherValue = CamelCards.getValue(other.cards)
 
         if (thisValue != otherValue)
             return thisValue - otherValue
 
-        for (int i = 0; i < cards.length(); i++) {
-            int thisType = types.indexOf(cards[i])
-            int otherType = types.indexOf(other.cards[i])
+        for (int i = 0; i < cardsBeforeJoker.length(); i++) {
+            int thisType = types.indexOf(cardsBeforeJoker[i])
+            int otherType = types.indexOf(other.cardsBeforeJoker[i])
 
             if (thisType != otherType) {
                 return otherType - thisType
@@ -149,6 +198,13 @@ static void main(String[] args) {
         Integer winnings = camelCards.getWinnings()
 
         println("Winnings: ${winnings}")
+
+        CamelCards camelCardsWithJoker = new CamelCards(file.text, true)
+
+        Integer winningsWithJoker = camelCardsWithJoker.getWinnings()
+
+        println("Winnings with joker: ${winningsWithJoker}")
+
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
     } catch (IOException e) {

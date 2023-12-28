@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="Solve day 2">
-      <change afterPath="$PROJECT_DIR$/input/day7.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/groovy/day7.groovy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/groovy/Day7Specification.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/Day6Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day6Specification.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/day7.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/day7.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/Day7Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day7Specification.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +100,12 @@
     "Gradle.Day6Specification.executor": "Run",
     "Gradle.Day6Specification.get races.executor": "Debug",
     "Gradle.Day6Specification.get sum 2.executor": "Debug",
+    "Gradle.Day7Specification.apply joker 2.executor": "Debug",
     "Gradle.Day7Specification.executor": "Run",
+    "Gradle.Day7Specification.get winnings with joker 1.executor": "Run",
+    "Gradle.Day7Specification.get winnings with joker 2.executor": "Debug",
+    "Gradle.Day7Specification.get winnings with joker 3.executor": "Debug",
+    "Gradle.Day7Specification.get winnings with joker.executor": "Run",
     "Gradle.Tests in 'AdventOfCode2023.test'.executor": "Run",
     "Groovy.Day4Specification.executor": "Run",
     "Groovy.day2part1.executor": "Run",
@@ -173,7 +176,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Day5Specification.get location number for category" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Day7Specification.apply joker 2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -186,7 +189,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;Day5Specification.get location number for category&quot;" />
+            <option value="&quot;Day7Specification.apply joker 2&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -197,7 +200,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Day5Specification.get lowest location number range" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Day7Specification.get winnings with joker 1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -210,7 +213,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;Day5Specification.get lowest location number range&quot;" />
+            <option value="&quot;Day7Specification.get winnings with joker 1&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -221,7 +224,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Day5Specification.get lowest location number" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Day7Specification.get winnings with joker 2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -234,7 +237,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;Day5Specification.get lowest location number&quot;" />
+            <option value="&quot;Day7Specification.get winnings with joker 2&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -245,7 +248,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Day6Specification.get races" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Day7Specification.get winnings with joker 3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -258,7 +261,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;Day6Specification.get races&quot;" />
+            <option value="&quot;Day7Specification.get winnings with joker 3&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -269,7 +272,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Day6Specification.get sum 2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Day7Specification.get winnings with joker" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -282,7 +285,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;Day6Specification.get sum 2&quot;" />
+            <option value="&quot;Day7Specification.get winnings with joker&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -295,11 +298,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Day6Specification.get sum 2" />
-        <item itemvalue="Gradle.Day6Specification.get races" />
-        <item itemvalue="Gradle.Day5Specification.get lowest location number range" />
-        <item itemvalue="Gradle.Day5Specification.get lowest location number" />
-        <item itemvalue="Gradle.Day5Specification.get location number for category" />
+        <item itemvalue="Gradle.Day7Specification.get winnings with joker 3" />
+        <item itemvalue="Gradle.Day7Specification.get winnings with joker 1" />
+        <item itemvalue="Gradle.Day7Specification.get winnings with joker 2" />
+        <item itemvalue="Gradle.Day7Specification.apply joker 2" />
+        <item itemvalue="Gradle.Day7Specification.get winnings with joker" />
       </list>
     </recent_temporary>
   </component>
@@ -385,11 +388,6 @@
           <url>file://$PROJECT_DIR$/src/main/groovy/day6.groovy</url>
           <line>107</line>
           <option name="timeStamp" value="109" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/groovy/Day7Specification.groovy</url>
-          <line>28</line>
-          <option name="timeStamp" value="113" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
