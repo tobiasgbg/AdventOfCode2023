@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="Solve day 2">
+      <change afterPath="$PROJECT_DIR$/input/day8.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/day8.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/groovy/Day8Specification.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/day7.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/day7.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/Day7Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day7Specification.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +53,20 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "tobiasgbg"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="6bb5fa92-9421-4a3e-857e-2e193f9f1fb0" />
+        <option name="url" value="https://github.com/tobiasgbg/AdventOfCode2023.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -106,6 +121,7 @@
     "Gradle.Day7Specification.get winnings with joker 2.executor": "Debug",
     "Gradle.Day7Specification.get winnings with joker 3.executor": "Debug",
     "Gradle.Day7Specification.get winnings with joker.executor": "Run",
+    "Gradle.Day8Specification.executor": "Run",
     "Gradle.Tests in 'AdventOfCode2023.test'.executor": "Run",
     "Groovy.Day4Specification.executor": "Run",
     "Groovy.day2part1.executor": "Run",
@@ -115,6 +131,7 @@
     "Groovy.day5.executor": "Run",
     "Groovy.day6.executor": "Run",
     "Groovy.day7.executor": "Run",
+    "Groovy.day8.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -388,6 +405,11 @@
           <url>file://$PROJECT_DIR$/src/main/groovy/day6.groovy</url>
           <line>107</line>
           <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/groovy/day8.groovy</url>
+          <line>46</line>
+          <option name="timeStamp" value="167" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
