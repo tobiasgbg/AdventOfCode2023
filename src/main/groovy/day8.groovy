@@ -35,9 +35,10 @@ Starting at AAA, follow the left/right instructions. How many steps are required
 class Wasteland {
     String directions = ""
     HashMap<String, Node> nodes = [:]
-    String currentNode = "AAA"
+    def isGhost = false
 
-    Wasteland(String input) {
+    Wasteland(String input, def isGhost = false) {
+        this.isGhost = isGhost
         List<String> lines = input.split("\\r\\n|\\n|\\r")
         directions = lines.first()
         for (line in lines.subList(2, lines.size())) {
@@ -45,11 +46,11 @@ class Wasteland {
             def matcher = pattern.matcher(line)
 
             if (matcher.find()) {
-                def part1 = matcher.group(1)
-                def part2 = matcher.group(2)
-                def part3 = matcher.group(3)
+                def position = matcher.group(1)
+                def left = matcher.group(2)
+                def right = matcher.group(3)
 
-                nodes.put(part1, new Node(part2, part3))
+                nodes.put(position, new Node(left, right))
             } else {
                 println "No match found"
             }
@@ -57,8 +58,24 @@ class Wasteland {
     }
 
     def getNoStepsToGoal() {
+
+        String start = isGhost ? "A" : "AAA"
+        def startNodes = nodes.keySet().findAll { key -> key.endsWith(start) }
+        List<Integer> distances = []
+
+        for (startNode in startNodes) {
+            Integer distance = getNoStepsToGoal(startNode)
+            distances.add(distance)
+        }
+
+        lcmOfList(distances)
+    }
+
+    def getNoStepsToGoal(String node) {
+        boolean atGoal = false
+        def currentNode = node
         def steps = 0
-        while (true) {
+        while (!atGoal) {
             def direction = directions[steps % directions.size()]
 
             if (direction == "L") {
@@ -67,12 +84,35 @@ class Wasteland {
                 currentNode = nodes[currentNode].right
             }
 
-            steps++
+            if (isGhost && currentNode.endsWith("Z"))
+                atGoal = true
+            else if (currentNode == "ZZZ")
+                atGoal = true
 
-            if (currentNode == "ZZZ")
-                break
+            steps++
         }
         steps
+    }
+
+    static def gcd(BigDecimal a, BigDecimal b) {
+        while (b != 0) {
+            def temp = b
+            b = a.remainder(b)
+            a = temp
+        }
+        return a
+    }
+
+    static def lcm(a, b) {
+        return (a * b) / gcd(a, b)
+    }
+
+    static def lcmOfList(numbers) {
+        def lcmResult = numbers[0]
+        numbers.each { n ->
+            lcmResult = lcm(lcmResult, n)
+        }
+        return lcmResult
     }
 }
 
@@ -99,6 +139,13 @@ static void main(String[] args) {
         def stepsToGoal = wasteland.getNoStepsToGoal()
 
         println("Number of steps to goal: ${stepsToGoal}")
+
+        Wasteland wastelandAsGhost = new Wasteland(file.text, true)
+
+        def stepsToGoalAsGhost = wastelandAsGhost.getNoStepsToGoal()
+
+        println("Number of steps to goal as ghost: ${stepsToGoalAsGhost}")
+
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
