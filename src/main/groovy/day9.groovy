@@ -1,41 +1,98 @@
 /*
---- Day 8: Haunted Wasteland ---
-You're still riding a camel across Desert Island when you spot a sandstorm quickly approaching. When you turn to warn the Elf, she disappears before your eyes! To be fair, she had just finished warning you about ghosts a few minutes ago.
+--- Day 9: Mirage Maintenance ---
+You ride the camel through the sandstorm and stop where the ghost's maps told you to stop. The sandstorm subsequently subsides, somehow seeing you standing at an oasis!
 
-One of the camel's pouches is labeled "maps" - sure enough, it's full of documents (your puzzle input) about how to navigate the desert. At least, you're pretty sure that's what they are; one of the documents contains a list of left/right instructions, and the rest of the documents seem to describe some kind of network of labeled nodes.
+The camel goes to get some water and you stretch your neck. As you look up, you discover what must be yet another giant floating island, this one made of metal! That must be where the parts to fix the sand machines come from.
 
-It seems like you're meant to use the left/right instructions to navigate the network. Perhaps if you have the camel follow the same instructions, you can escape the haunted wasteland!
+There's even a hang glider partially buried in the sand here; once the sun rises and heats up the sand, you might be able to use the glider and the hot air to get all the way up to the metal island!
 
-After examining the maps for a bit, two nodes stick out: AAA and ZZZ. You feel like AAA is where you are now, and you have to follow the left/right instructions until you reach ZZZ.
+While you wait for the sun to rise, you admire the oasis hidden here in the middle of Desert Island. It must have a delicate ecosystem; you might as well take some ecological readings while you wait. Maybe you can report any environmental instabilities you find to someone so the oasis can be around for the next sandstorm-worn traveler.
 
-This format defines each node of the network individually. For example:
+You pull out your handy Oasis And Sand Instability Sensor and analyze your surroundings. The OASIS produces a report of many values and how they are changing over time (your puzzle input). Each line in the report contains the history of a single value. For example:
 
-RL
+0 3 6 9 12 15
+1 3 6 10 15 21
+10 13 16 21 30 45
+To best protect the oasis, your environmental report should include a prediction of the next value in each history. To do this, start by making a new sequence from the difference at each step of your history. If that sequence is not all zeroes, repeat this process, using the sequence you just generated as the input sequence. Once all of the values in your latest sequence are zeroes, you can extrapolate what the next value of the original history should be.
 
-AAA = (BBB, CCC)
-BBB = (DDD, EEE)
-CCC = (ZZZ, GGG)
-DDD = (DDD, DDD)
-EEE = (EEE, EEE)
-GGG = (GGG, GGG)
-ZZZ = (ZZZ, ZZZ)
-Starting with AAA, you need to look up the next element based on the next left/right instruction in your input. In this example, start with AAA and go right (R) by choosing the right element of AAA, CCC. Then, L means to choose the left element of CCC, ZZZ. By following the left/right instructions, you reach ZZZ in 2 steps.
+In the above dataset, the first history is 0 3 6 9 12 15. Because the values increase by 3 each step, the first sequence of differences that you generate will be 3 3 3 3 3. Note that this sequence has one fewer value than the input sequence because at each step it considers two numbers from the input. Since these values aren't all zero, repeat the process: the values differ by 0 at each step, so the next sequence is 0 0 0 0. This means you have enough information to extrapolate the history! Visually, these sequences can be arranged like this:
 
-Of course, you might not find ZZZ right away. If you run out of left/right instructions, repeat the whole sequence of instructions as necessary: RL really means RLRLRLRLRLRLRLRL... and so on. For example, here is a situation that takes 6 steps to reach ZZZ:
+0   3   6   9  12  15
+  3   3   3   3   3
+    0   0   0   0
+To extrapolate, start by adding a new zero to the end of your list of zeroes; because the zeroes represent differences between the two values above them, this also means there is now a placeholder in every sequence above it:
 
-LLR
+0   3   6   9  12  15   B
+  3   3   3   3   3   A
+    0   0   0   0   0
+You can then start filling in placeholders from the bottom up. A needs to be the result of increasing 3 (the value to its left) by 0 (the value below it); this means A must be 3:
 
-AAA = (BBB, BBB)
-BBB = (AAA, ZZZ)
-ZZZ = (ZZZ, ZZZ)
+0   3   6   9  12  15   B
+  3   3   3   3   3   3
+    0   0   0   0   0
+Finally, you can fill in B, which needs to be the result of increasing 15 (the value to its left) by 3 (the value below it), or 18:
 
-Starting at AAA, follow the left/right instructions. How many steps are required to reach ZZZ?
+0   3   6   9  12  15  18
+  3   3   3   3   3   3
+    0   0   0   0   0
+So, the next value of the first history is 18.
+
+Finding all-zero differences for the second history requires an additional sequence:
+
+1   3   6  10  15  21
+  2   3   4   5   6
+    1   1   1   1
+      0   0   0
+Then, following the same process as before, work out the next value in each sequence from the bottom up:
+
+1   3   6  10  15  21  28
+  2   3   4   5   6   7
+    1   1   1   1   1
+      0   0   0   0
+So, the next value of the second history is 28.
+
+The third history requires even more sequences, but its next value can be found the same way:
+
+10  13  16  21  30  45  68
+   3   3   5   9  15  23
+     0   2   4   6   8
+       2   2   2   2
+         0   0   0
+So, the next value of the third history is 68.
+
+If you find the next value for each history in this example and add them together, you get 114.
+
+Analyze your OASIS report and extrapolate the next value for each history. What is the sum of these extrapolated values?
+
+Your puzzle answer was 1681758908.
+
+The first half of this puzzle is complete! It provides one gold star: *
+
+--- Part Two ---
+Of course, it would be nice to have even more history included in your report. Surely it's safe to just extrapolate backwards as well, right?
+
+For each history, repeat the process of finding differences until the sequence of differences is entirely zero. Then, rather than adding a zero to the end and filling in the next values of each previous sequence, you should instead add a zero to the beginning of your sequence of zeroes, then fill in new first values for each previous sequence.
+
+In particular, here is what the third example history looks like when extrapolating back in time:
+
+5  10  13  16  21  30  45
+  5   3   3   5   9  15
+   -2   0   2   4   6
+      2   2   2   2
+        0   0   0
+Adding the new values on the left side of each sequence from bottom to top eventually reveals the new left-most history value: 5.
+
+Doing this for the remaining example data above results in previous values of -3 for the first history and 0 for the second history. Adding all three new values together produces 2.
+
+Analyze your OASIS report again, this time extrapolating the previous value for each history. What is the sum of these extrapolated values?
  */
 
 class Oasis {
-    List<History> histories = []
+    def histories = []
+    def before = false
 
-    Oasis(String input) {
+    Oasis(String input, boolean before = false) {
+        this.before = before
         List<String> lines = input.split("\\r\\n|\\n|\\r")
         for (line in lines) {
             List<Integer> values = line.split(' ').collect { it.toInteger() }
@@ -44,32 +101,39 @@ class Oasis {
     }
 
     def getSum() {
-        histories.sum { it.getNextValue() }
+        histories.sum { before ? it.getPreviousValue() : it.getNextValue() }
     }
 }
 
 class History {
-    List<Integer> values = []
+    def values = []
 
     History (def values) {
         this.values = values
     }
 
-    Integer getNextValue() {
-        getNextValue(this.values)
+    def getNextValue() {
+        getValue(this.values, true)
     }
 
-    Integer getNextValue(List<Integer> values) {
+    def getPreviousValue() {
+        getValue(this.values, false)
+    }
+
+    def getValue(List<Integer> values, boolean addAfter = true) {
         if (values.every { it == 0 }) {
             return 0
         }
 
         List<Integer> deltas = []
         for (int i = 0; i < values.size() - 1; i++) {
-            deltas.add(values[i+1] - values[i])
+            deltas = deltas + (values[i+1] - values[i])
         }
 
-        values.last() + getNextValue(deltas)
+        if (addAfter)
+            values.last() + getValue(deltas, addAfter)
+        else
+            values.first() - getValue(deltas, addAfter)
     }
 }
 
@@ -86,6 +150,12 @@ static void main(String[] args) {
         def sum = oasis.getSum()
 
         println("Sum: ${sum}")
+
+        Oasis oasisBefore = new Oasis(file.text, true)
+
+        def sumBefore = oasisBefore.getSum()
+
+        println("Sum before: ${sumBefore}")
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
     } catch (IOException e) {
