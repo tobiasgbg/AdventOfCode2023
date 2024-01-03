@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79e61647-67d3-402c-a25e-7f79411ac545" name="Changes" comment="Solve day 2">
-      <change afterPath="$PROJECT_DIR$/src/main/groovy/day10.groovy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/groovy/Day10Specification.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input/day10.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/day10.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/day10.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/Day10Specification.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/Day10Specification.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,12 +54,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "tobiasgbg"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;tobiasgbg&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -92,6 +93,7 @@
     "Gradle.AdventOfCode2023 [testClasses].executor": "Run",
     "Gradle.Build AdventOfCode2023.executor": "Run",
     "Gradle.Day10Specification.executor": "Run",
+    "Gradle.Day10Specification.get steps to furthest point 5.executor": "Run",
     "Gradle.Day2Specification.executor": "Run",
     "Gradle.Day3Specification (1).executor": "Run",
     "Gradle.Day3Specification.check gear sum 1.executor": "Debug",
@@ -144,7 +146,7 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/meant/OneDrive/Documents/GitHub/AdventOfCode2023/src/test/groovy",
+    "last_opened_file_path": "C:/Users/meant/OneDrive/Documents/GitHub/AdventOfCode2023/input",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -161,6 +163,7 @@
       <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\meant\OneDrive\Documents\GitHub\AdventOfCode2023\input" />
       <recent name="C:\Users\meant\OneDrive\Documents\GitHub\AdventOfCode2023\src\test\groovy" />
       <recent name="C:\Users\meant\OneDrive\Documents\GitHub\AdventOfCode2023\src\main\groovy" />
     </key>
@@ -174,7 +177,31 @@
       <command value="gradle clean" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.Day10Specification.get steps to furthest point 5">
+    <configuration name="Day10Specification.get steps to furthest point 5" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;Day10Specification.get steps to furthest point 5&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="Day3Specification.get adjacent part numbers" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -189,30 +216,6 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;Day3Specification.get adjacent part numbers&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="Day7Specification.get winnings with joker 1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;Day7Specification.get winnings with joker 1&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -321,11 +324,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Day10Specification.get steps to furthest point 5" />
         <item itemvalue="Gradle.Day9Specification.get extrapolated value before" />
         <item itemvalue="Gradle.Day9Specification.get extrapolated value 2" />
         <item itemvalue="Gradle.Day8Specification.go to goal number of steps as ghost" />
         <item itemvalue="Gradle.Day7Specification.get winnings with joker 3" />
-        <item itemvalue="Gradle.Day7Specification.get winnings with joker 1" />
       </list>
     </recent_temporary>
   </component>
@@ -411,6 +414,16 @@
           <url>file://$PROJECT_DIR$/src/main/groovy/day6.groovy</url>
           <line>107</line>
           <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/groovy/day10.groovy</url>
+          <line>166</line>
+          <option name="timeStamp" value="208" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/groovy/day10.groovy</url>
+          <line>152</line>
+          <option name="timeStamp" value="209" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />

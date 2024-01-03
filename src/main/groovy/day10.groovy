@@ -99,13 +99,6 @@ class PipeMaze {
         }
     }
 
-    def getLoop() {
-        Coordinate startPos = getStartingPosition()
-
-
-
-    }
-
     Coordinate getStartingPosition() {
         Integer start_row = 0, start_column = 0
         for (int row = 0; row < coordinates.size(); row++) {
@@ -119,68 +112,92 @@ class PipeMaze {
         new Coordinate(start_row, start_column)
     }
 
-    Coordinate getNextPosition(int currentRow, int currentColumn, Character direction) {
-        Coordinate nextPosition = null
-        int row = currentRow, column = currentColumn
-        if (direction == 'U')
-            row = currentRow - 1
-        else if (direction == 'D')
-            row = currentRow + 1
-        else if (direction == 'L')
-            column = currentColumn - 1
-        else if (direction == 'R')
-            column = currentColumn + 1
+    Character getNextDirection(int row, int column, Character direction) {
+        Character nextDirection = null
 
         Character location = coordinates[row][column]
 
         if (location == '|' && direction == 'U')
-            nextPosition = new Coordinate(row - 1, column)
+            nextDirection = 'U'
         else if (location == '|' && direction == 'D')
-            nextPosition = new Coordinate(row + 1, column)
+            nextDirection = 'D'
         else if (location == '-' && direction == 'L')
-            nextPosition = new Coordinate(row, column - 1)
+            nextDirection = 'L'
         else if (location == '-' && direction == 'R')
-            nextPosition = new Coordinate(row, column + 1)
+            nextDirection = 'R'
         else if (location == 'L' && direction == 'L')
-            nextPosition = new Coordinate(row - 1, column - 1)
+            nextDirection = 'U'
         else if (location == 'L' && direction == 'D')
-            nextPosition = new Coordinate(row + 1, column + 1)
+            nextDirection = 'R'
         else if (location == 'J' && direction == 'D')
-            nextPosition = new Coordinate(row, column - 1)
+            nextDirection = 'L'
         else if (location == 'J' && direction == 'R')
-            nextPosition = new Coordinate(row - 1, column + 1)
+            nextDirection = 'U'
         else if (location == '7' && direction == 'R')
-            nextPosition = new Coordinate(row + 1, column)
+            nextDirection = 'D'
         else if (location == '7' && direction == 'U')
-            nextPosition = new Coordinate(row, column - 1)
+            nextDirection = 'L'
         else if (location == 'F' && direction == 'L')
-            nextPosition = new Coordinate(row + 1, column)
+            nextDirection = 'D'
         else if (location == 'F' && direction == 'U')
-            nextPosition = new Coordinate(row, column + 1)
+            nextDirection = 'R'
+        else if (location == 'S')
+            nextDirection = 'S'
 
-        nextPosition
+        nextDirection
+    }
+
+    def getStepsToFurthestPoint() {
+        Coordinate startingPosition = getStartingPosition()
+        Coordinate currentPos = startingPosition
+        def directions = ['U', 'D', 'L', 'R']
+        def directionIndex = 0
+        def loopLength = 0
+        def currentDirection = null
+
+        boolean atStart = false
+        while (!atStart) {
+            if (!currentDirection) {
+                currentPos = new Coordinate(startingPosition.row, startingPosition.column)
+                directionIndex = ++directionIndex % directions.size()
+                currentDirection = directions[directionIndex]
+                loopLength = 0
+            }
+
+            if (currentDirection == 'U')
+                currentPos.row--
+            else if (currentDirection == 'D')
+                currentPos.row++
+            else if (currentDirection == 'R')
+                currentPos.column++
+            else if (currentDirection == 'L')
+                currentPos.column--
+
+            currentDirection = getNextDirection(currentPos.row, currentPos.column, currentDirection as Character)
+
+            loopLength++
+
+            if (currentDirection == 'S')
+                atStart = true
+        }
+
+        (loopLength / 2) as Integer
     }
 }
 
 static void main(String[] args) {
     try {
         // Specify the file path
-        String filePath = "../../../input/day9.txt"
+        String filePath = "../../../input/day10.txt"
 
         // Create a File object
         File file = new File(filePath)
 
-        Oasis oasis = new Oasis(file.text)
+        PipeMaze pipeMaze = new PipeMaze(file.text)
 
-        def sum = oasis.getSum()
+        def steps = pipeMaze.getStepsToFurthestPoint()
 
-        println("Sum: ${sum}")
-
-        Oasis oasisBefore = new Oasis(file.text, true)
-
-        def sumBefore = oasisBefore.getSum()
-
-        println("Sum before: ${sumBefore}")
+        println("Steps: ${steps}")
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
     } catch (IOException e) {
