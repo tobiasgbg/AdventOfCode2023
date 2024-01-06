@@ -148,11 +148,40 @@ class PipeMaze {
     }
 
     def getStepsToFurthestPoint() {
+        def loop = getLoop()
+        loop.size() / 2
+    }
+
+    static def getDiagonalSum(def loop, def reverse = false) {
+        def result = 0
+        // Iterate with a step of 2 to skip duplicated vertices
+        for (int i = 0; i < loop.size(); i += 1) {
+            int nextIndex = (int) ((i + 1) % loop.size()) // Ensure loop closure
+            result += reverse ? loop[i].column * loop[nextIndex].row : loop[i].row * loop[nextIndex].column
+        }
+        result
+    }
+
+    def getNoEnclosedPoints() {
+        def loop = getLoop()
+        def areaOfLoop = getAreaOfLoop(loop)
+        def noOfBoundariesPoint = loop.size()
+        areaOfLoop - noOfBoundariesPoint / 2 + 1
+    }
+
+    static def getAreaOfLoop(def loop) {
+        def diagonalSum = getDiagonalSum(loop)
+        def diagonalSumReverse = getDiagonalSum(loop,true)
+        def subtracted = diagonalSumReverse - diagonalSum
+        Math.abs(subtracted) / 2 as Integer // Area is the absolute value of half the difference
+    }
+
+    def getLoop() {
         Coordinate startingPosition = getStartingPosition()
         Coordinate currentPos = startingPosition
         def directions = ['U', 'D', 'L', 'R']
         def directionIndex = 0
-        def loopLength = 0
+        def coordinates = []
         def currentDirection = null
 
         boolean atStart = false
@@ -161,7 +190,7 @@ class PipeMaze {
                 currentPos = new Coordinate(startingPosition.row, startingPosition.column)
                 directionIndex = ++directionIndex % directions.size()
                 currentDirection = directions[directionIndex]
-                loopLength = 0
+                coordinates = []
             }
 
             if (currentDirection == 'U')
@@ -175,13 +204,13 @@ class PipeMaze {
 
             currentDirection = getNextDirection(currentPos.row, currentPos.column, currentDirection as Character)
 
-            loopLength++
+            coordinates.add(new Coordinate(currentPos.row, currentPos.column))
 
             if (currentDirection == 'S')
                 atStart = true
         }
 
-        (loopLength / 2) as Integer
+        coordinates
     }
 }
 
@@ -198,6 +227,11 @@ static void main(String[] args) {
         def steps = pipeMaze.getStepsToFurthestPoint()
 
         println("Steps: ${steps}")
+
+        def noEnclosedPoints = pipeMaze.getNoEnclosedPoints()
+
+        println("Enclosed points: ${noEnclosedPoints}")
+
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
     } catch (IOException e) {

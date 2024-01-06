@@ -280,4 +280,86 @@ L||L|----F.7J..LLJ-FJ-JL|-7.|-|7.L-F7-|FJ-|7F-JJFL..J7|||-F|JLLJF-|7-LJL-JLJ7LJL
         expect:
         pipeMaze.getStepsToFurthestPoint() == 6831
     }
+
+    def "get loop border size"() {
+        given:
+        String input = """.....
+.S-7.
+.|.|.
+.L-J.
+....."""
+        PipeMaze pipeMaze = new PipeMaze(input)
+
+        expect:
+        pipeMaze.getLoop().size() == 8
+    }
+
+    def "get loop border 1"() {
+        given:
+        String input = """.....
+.S-7.
+.|.|.
+.L-J.
+....."""
+        PipeMaze pipeMaze = new PipeMaze(input)
+
+        expect:
+        pipeMaze.getLoop()[0].row == 2
+        pipeMaze.getLoop()[0].column == 1
+    }
+
+    def "get loop border 2"() {
+        given:
+        String input = """.....
+.S-7.
+.|.|.
+.L-J.
+....."""
+        PipeMaze pipeMaze = new PipeMaze(input)
+
+        expect:
+        pipeMaze.getLoop()[1].row == 3
+        pipeMaze.getLoop()[1].column == 1
+    }
+
+    def "get diagonal sum"() {
+        given:
+        String input = """.....
+.S-7.
+.|.|.
+.L-J.
+....."""
+        PipeMaze pipeMaze = new PipeMaze(input)
+        def loop = pipeMaze.getLoop()
+
+        expect:
+        pipeMaze.getDiagonalSum(loop) == 36
+    }
+
+    def "get area"() {
+        given:
+        String input = """.....
+.S-7.
+.|.|.
+.L-J.
+....."""
+        PipeMaze pipeMaze = new PipeMaze(input)
+        def loop = pipeMaze.getLoop()
+
+        expect:
+        pipeMaze.getAreaOfLoop(loop) == 4
+    }
+
+    def "get enclosed squares"() {
+        given:
+        String input = """.....
+.S-7.
+.|.|.
+.L-J.
+....."""
+        PipeMaze pipeMaze = new PipeMaze(input)
+
+        expect:
+        pipeMaze.getNoEnclosedPoints() == 1
+    }
 }
