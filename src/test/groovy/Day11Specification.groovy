@@ -15,51 +15,51 @@ class Day11Specification extends Specification {
 
     def "get size"() {
         given:
-        Galaxy galaxy = new Galaxy(EXAMPLE_INPUT)
+        Universe universe = new Universe(EXAMPLE_INPUT)
 
         expect:
-        galaxy.coordinates.size() * galaxy.coordinates[0].size() == 100
+        universe.coordinates.size() * universe.coordinates[0].size() == 100
     }
 
     def "is row empty true"() {
         given:
-        Galaxy galaxy = new Galaxy(EXAMPLE_INPUT)
+        Universe universe = new Universe(EXAMPLE_INPUT)
 
         expect:
-        galaxy.isRowEmpty(3)  // Row 3 is ".........."
+        universe.isRowEmpty(3)  // Row 3 is ".........."
     }
 
     def "is row empty false"() {
         given:
-        Galaxy galaxy = new Galaxy(EXAMPLE_INPUT)
+        Universe universe = new Universe(EXAMPLE_INPUT)
 
         expect:
-        !galaxy.isRowEmpty(0)
+        !universe.isRowEmpty(0)
     }
 
     def "is column empty true"() {
         given:
-        Galaxy galaxy = new Galaxy(EXAMPLE_INPUT)
+        Universe universe = new Universe(EXAMPLE_INPUT)
 
         expect:
-        galaxy.isColumnEmpty(2)
+        universe.isColumnEmpty(2)
     }
 
     def "is column empty false"() {
         given:
-        Galaxy galaxy = new Galaxy(EXAMPLE_INPUT)
+        Universe universe = new Universe(EXAMPLE_INPUT)
 
         expect:
-        !galaxy.isColumnEmpty(0)
+        !universe.isColumnEmpty(0)
     }
 
     def "get size expanded row count"() {
         given:
-        Galaxy galaxy = new Galaxy(EXAMPLE_INPUT)
-        galaxy.expand()
+        Universe universe = new Universe(EXAMPLE_INPUT)
+        universe.expand()
 
         when:
-        def actualRows = galaxy.coordinates.size()
+        def actualRows = universe.coordinates.size()
 
         println "Actual rows: $actualRows (expected: 12)"
 
@@ -67,17 +67,33 @@ class Day11Specification extends Specification {
         actualRows == 12
     }
 
-        def "get size expanded column count"() {
+    def "get size expanded column count"() {
         given:
-        Galaxy galaxy = new Galaxy(EXAMPLE_INPUT)
-        galaxy.expand()
+        Universe universe = new Universe(EXAMPLE_INPUT)
+        universe.expand()
 
         when:
-        def actualCols = galaxy.coordinates[0].size()
+        def actualCols = universe.coordinates[0].size()
 
         println "Actual cols: $actualCols (expected: 13)"
 
         then:
         actualCols == 13
+    }
+
+    def "galaxy row"() {
+        given:
+        Galaxy galaxy = new Galaxy(1,3)
+
+        expect:
+        galaxy.row == 1
+    }
+
+    def "galaxy column"() {
+        given:
+        Galaxy galaxy = new Galaxy(1,3)
+
+        expect:
+        galaxy.column == 3
     }
 }

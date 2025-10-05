@@ -90,10 +90,10 @@ In this example, after expanding the universe, the sum of the shortest path betw
 Expand the universe, then find the length of the shortest path between every pair of galaxies. What is the sum of these lengths?
  */
 
-class Galaxy {
+class Universe {
     List<List<Character>> coordinates = []
 
-    Galaxy(String input) {
+    Universe(String input) {
         List<String> lines = input.split("\\r\\n|\\n|\\r")
         for (int row = 0; row < lines.size(); row++) {
             coordinates.add([])
@@ -142,6 +142,16 @@ class Galaxy {
                 }
             }
         }
+    }
+}
+
+class Galaxy {
+    int row
+    int column
+
+    Galaxy(int row, int column) {
+        this.row = row
+        this.column = column
     }
 }
 
