@@ -53,23 +53,31 @@ class Day11Specification extends Specification {
         !galaxy.isColumnEmpty(0)
     }
 
-    def "get size expanded"() {
+    def "get size expanded row count"() {
         given:
         Galaxy galaxy = new Galaxy(EXAMPLE_INPUT)
         galaxy.expand()
 
         when:
         def actualRows = galaxy.coordinates.size()
-        def actualCols = galaxy.coordinates[0].size()
-        def actualSize = actualRows * actualCols
 
         println "Actual rows: $actualRows (expected: 12)"
-        println "Actual cols: $actualCols (expected: 13)"
-        println "Actual size: $actualSize (expected: ${13 * 12})"
 
         then:
         actualRows == 12
+    }
+
+        def "get size expanded column count"() {
+        given:
+        Galaxy galaxy = new Galaxy(EXAMPLE_INPUT)
+        galaxy.expand()
+
+        when:
+        def actualCols = galaxy.coordinates[0].size()
+
+        println "Actual cols: $actualCols (expected: 13)"
+
+        then:
         actualCols == 13
-        actualSize == 13 * 12
     }
 }
