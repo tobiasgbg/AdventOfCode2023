@@ -90,10 +90,59 @@ In this example, after expanding the universe, the sum of the shortest path betw
 Expand the universe, then find the length of the shortest path between every pair of galaxies. What is the sum of these lengths?
  */
 
-class CosmicExpansion {
+class Galaxy {
+    List<List<Character>> coordinates = []
 
-    // TODO: Implement solution
+    Galaxy(String input) {
+        List<String> lines = input.split("\\r\\n|\\n|\\r")
+        for (int row = 0; row < lines.size(); row++) {
+            coordinates.add([])
+            for (int column = 0; column < lines[row].size(); column++)
+                this.coordinates[row][column] = (lines[row][column] as Character)
+        }
+    }
 
+    boolean isRowEmpty(int row) {
+        for (int column = 0; column < coordinates[row].size(); column++) {
+            if (coordinates[row][column] != '.') {
+                return false
+            }
+        }
+        true
+    }
+
+    boolean isColumnEmpty(int column) {
+        for (int row = 0; row < coordinates.size(); row++) {
+            if (coordinates[row][column] != '.') {
+                return false
+            }
+        }
+        true
+    }
+
+    def expand() {
+        // First, expand rows (going backwards to avoid index shifting issues)
+        for (int row = coordinates.size() - 1; row >= 0; row--) {
+            if (isRowEmpty(row)) {
+                // Insert a duplicate empty row
+                def emptyRow = []
+                for (int col = 0; col < coordinates[row].size(); col++) {
+                    emptyRow.add('.' as Character)
+                }
+                coordinates.add(row + 1, emptyRow)
+            }
+        }
+
+        // Then, expand columns (going backwards to avoid index shifting issues)
+        for (int column = coordinates[0].size() - 1; column >= 0; column--) {
+            if (isColumnEmpty(column)) {
+                // Insert a '.' in each row at this column position
+                for (int row = 0; row < coordinates.size(); row++) {
+                    coordinates[row].add(column + 1, '.' as Character)
+                }
+            }
+        }
+    }
 }
 
 static void main(String[] args) {
