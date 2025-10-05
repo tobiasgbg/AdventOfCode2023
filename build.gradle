@@ -24,3 +24,64 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+// Individual tasks for each day
+task runDay1(type: JavaExec) {
+    mainClass = 'day1part1'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}
+
+task runDay2(type: JavaExec) {
+    mainClass = 'day2part1'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}
+
+task runDay3(type: JavaExec) {
+    mainClass = 'day3'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}
+
+task runDay4(type: JavaExec) {
+    mainClass = 'day4'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}
+
+task runDay5(type: JavaExec) {
+    mainClass = 'day5'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}
+
+task runDay6(type: JavaExec) {
+    mainClass = 'day6'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}
+
+task runDay7(type: JavaExec) {
+    mainClass = 'day7'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}
+
+task runDay8(type: JavaExec) {
+    mainClass = 'day8'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}
+
+task runDay9(type: JavaExec) {
+    mainClass = 'day9'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}
+
+task runDay10(type: JavaExec) {
+    mainClass = 'day10'
+    classpath = sourceSets.main.runtimeClasspath
+    workingDir = file('src/main/groovy')
+}

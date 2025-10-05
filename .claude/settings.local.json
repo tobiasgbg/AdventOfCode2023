@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(java:*)",
-      "Bash(./gradlew:*)"
+      "Bash(./gradlew:*)",
+      "Bash(groovy:*)"
     ],
     "deny": [],
     "ask": []
