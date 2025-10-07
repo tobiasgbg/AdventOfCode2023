@@ -88,17 +88,40 @@ Between galaxy 8 and galaxy 9: 5
 In this example, after expanding the universe, the sum of the shortest path between all 36 pairs of galaxies is 374.
 
 Expand the universe, then find the length of the shortest path between every pair of galaxies. What is the sum of these lengths?
+
+--- Part Two ---
+The galaxies are much older (and thus much farther apart) than the researcher initially estimated.
+
+Now, instead of the expansion you did before, make each empty row or column one million times larger. That is, each empty row should be replaced with 1000000 empty rows, and each empty column should be replaced with 1000000 empty columns.
+
+(In the example above, if each empty row or column were merely 10 times larger, the sum of the shortest paths between every pair of galaxies would be 1030. If each empty row or column were merely 100 times larger, the sum of the shortest paths between every pair of galaxies would be 8410. However, your universe will need to expand far beyond these values.)
+
+Starting with the same initial image, expand the universe according to these new rules, then find the length of the shortest path between every pair of galaxies. What is the sum of these lengths?
  */
 
 class Universe {
     List<List<Character>> coordinates = []
+    List<Galaxy> galaxies = []
+    List<GalaxyPair> galaxyPairs = []
 
     Universe(String input) {
         List<String> lines = input.split("\\r\\n|\\n|\\r")
         for (int row = 0; row < lines.size(); row++) {
             coordinates.add([])
-            for (int column = 0; column < lines[row].size(); column++)
+            for (int column = 0; column < lines[row].size(); column++) {
                 this.coordinates[row][column] = (lines[row][column] as Character)
+                if (lines[row][column] == "#") {
+                    Galaxy galaxy = new Galaxy(row, column)
+                    this.galaxies.add(galaxy)
+                }
+            }
+        }
+
+         for (int i = 0; i < galaxies.size(); i++) {
+            for (int j = i + 1; j < galaxies.size(); j++) {
+                GalaxyPair galaxyPair = new GalaxyPair(galaxies[i], galaxies[j])
+                galaxyPairs.add(galaxyPair)
+            }
         }
     }
 
@@ -120,28 +143,42 @@ class Universe {
         true
     }
 
-    def expand() {
-        // First, expand rows (going backwards to avoid index shifting issues)
-        for (int row = coordinates.size() - 1; row >= 0; row--) {
+    def expand(int multiplier = 2) {
+        // Find empty rows and columns first
+        List<Integer> emptyRows = []
+        List<Integer> emptyColumns = []
+
+        for (int row = 0; row < coordinates.size(); row++) {
             if (isRowEmpty(row)) {
-                // Insert a duplicate empty row
-                def emptyRow = []
-                for (int col = 0; col < coordinates[row].size(); col++) {
-                    emptyRow.add('.' as Character)
-                }
-                coordinates.add(row + 1, emptyRow)
+                emptyRows.add(row)
             }
         }
 
-        // Then, expand columns (going backwards to avoid index shifting issues)
-        for (int column = coordinates[0].size() - 1; column >= 0; column--) {
+        for (int column = 0; column < coordinates[0].size(); column++) {
             if (isColumnEmpty(column)) {
-                // Insert a '.' in each row at this column position
-                for (int row = 0; row < coordinates.size(); row++) {
-                    coordinates[row].add(column + 1, '.' as Character)
-                }
+                emptyColumns.add(column)
             }
         }
+
+        // Adjust galaxy positions based on how many empty rows/columns are before them
+        // Each empty row/column expands from 1 to multiplier units, so we add (multiplier - 1) extra units
+        for (Galaxy galaxy : galaxies) {
+            // Count how many empty rows are before this galaxy
+            int emptyRowsBefore = emptyRows.count { it < galaxy.row }
+            galaxy.row += emptyRowsBefore * (multiplier - 1)
+
+            // Count how many empty columns are before this galaxy
+            int emptyColumnsBefore = emptyColumns.count { it < galaxy.column }
+            galaxy.column += emptyColumnsBefore * (multiplier - 1)
+        }
+    }
+
+    long getSumOfShortestPaths() {
+        long sum = 0
+        for (galaxyPair in this.galaxyPairs) {
+            sum += galaxyPair.shortestDistance()
+        }
+        sum
     }
 }
 
@@ -153,16 +190,45 @@ class Galaxy {
         this.row = row
         this.column = column
     }
+
+    int shortestDistanceTo(Galaxy targetGalaxy) {
+        // Manhattan distance: sum of absolute differences in row and column
+        Math.abs(this.row - targetGalaxy.row) + Math.abs(this.column - targetGalaxy.column)
+    }
 }
+
+class GalaxyPair {
+    Galaxy galaxy1
+    Galaxy galaxy2
+
+    GalaxyPair(Galaxy galaxy1, Galaxy galaxy2) {
+        this.galaxy1 = galaxy1
+        this.galaxy2 = galaxy2
+    }
+
+    int shortestDistance() {
+        galaxy1.shortestDistanceTo(galaxy2)
+    }
+}
+
 
 static void main(String[] args) {
     try {
         String filePath = "../../../input/day11.txt"
         File file = new File(filePath)
+        String input = file.text
 
-        // TODO: Parse input and solve
+        // Part 1: Expand by 2x (default)
+        Universe universe1 = new Universe(input)
+        universe1.expand()
+        long sumOfPaths1 = universe1.getSumOfShortestPaths()
+        println("Part 1: ${sumOfPaths1}")
 
-        println("Part 1: [NOT IMPLEMENTED]")
+        // Part 2: Expand by 1,000,000x
+        Universe universe2 = new Universe(input)
+        universe2.expand(1000000)
+        long sumOfPaths2 = universe2.getSumOfShortestPaths()
+        println("Part 2: ${sumOfPaths2}")
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)

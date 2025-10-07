@@ -53,34 +53,6 @@ class Day11Specification extends Specification {
         !universe.isColumnEmpty(0)
     }
 
-    def "get size expanded row count"() {
-        given:
-        Universe universe = new Universe(EXAMPLE_INPUT)
-        universe.expand()
-
-        when:
-        def actualRows = universe.coordinates.size()
-
-        println "Actual rows: $actualRows (expected: 12)"
-
-        then:
-        actualRows == 12
-    }
-
-    def "get size expanded column count"() {
-        given:
-        Universe universe = new Universe(EXAMPLE_INPUT)
-        universe.expand()
-
-        when:
-        def actualCols = universe.coordinates[0].size()
-
-        println "Actual cols: $actualCols (expected: 13)"
-
-        then:
-        actualCols == 13
-    }
-
     def "galaxy row"() {
         given:
         Galaxy galaxy = new Galaxy(1,3)
@@ -95,5 +67,67 @@ class Day11Specification extends Specification {
 
         expect:
         galaxy.column == 3
+    }
+
+    def "galaxy count"() {
+        given:
+        Universe universe = new Universe(EXAMPLE_INPUT)
+
+        expect:
+        universe.galaxies.size() == 9
+    }
+
+    def "galaxy pair count"() {
+        given:
+        Universe universe = new Universe(EXAMPLE_INPUT)
+
+        expect:
+        universe.galaxyPairs.size() == 36
+    }
+
+    def "galaxy pairs sum"() {
+        given:
+        Universe universe = new Universe(EXAMPLE_INPUT)
+        universe.expand()
+
+        expect:
+        universe.getSumOfShortestPaths() == 374
+    }
+
+    def "galaxy pairs sum large expansion"() {
+        given:
+        Universe universe = new Universe(EXAMPLE_INPUT)
+        universe.expand(10)
+
+        expect:
+        universe.getSumOfShortestPaths() == 1030
+    }
+
+    def "galaxy pairs sum very large expansion"() {
+        given:
+        Universe universe = new Universe(EXAMPLE_INPUT)
+        universe.expand(100)
+
+        expect:
+        universe.getSumOfShortestPaths() == 8410
+    }
+
+    def "shortestDistance"() {
+        given:
+        Galaxy galaxy1 = new Galaxy(1,3)
+        Galaxy galaxy2 = new Galaxy(1,2)
+
+        expect:
+        galaxy1.shortestDistanceTo(galaxy2) == 1
+    }
+
+    def "shortestDistance pair"() {
+        given:
+        Galaxy galaxy1 = new Galaxy(1,3)
+        Galaxy galaxy2 = new Galaxy(1,2)
+        GalaxyPair galaxyPair = new GalaxyPair(galaxy1, galaxy2)
+
+        expect:
+        galaxyPair.shortestDistance() == 1
     }
 }
