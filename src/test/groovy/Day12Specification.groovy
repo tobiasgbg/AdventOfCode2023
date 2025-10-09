@@ -48,4 +48,12 @@ class Day12Specification extends Specification {
         expect:
         hotSprings.getHotSpringsRow(0).row == "???.### 1,1,3"
     }
+
+    def "unfold"() {
+        given:
+        HotSprings hotSprings = new HotSprings(EXAMPLE_INPUT)
+
+        expect:
+        hotSprings.getHotSpringsRow(0).unfold().row == "???.###????.###????.###????.###????.### 1,1,3,1,1,3,1,1,3,1,1,3,1,1,3"
+    }
 }

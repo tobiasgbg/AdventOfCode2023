@@ -72,6 +72,32 @@ In this example, the number of possible arrangements for each row is:
 Adding all of the possible arrangement counts together produces a total of 21 arrangements.
 
 For each row, count all of the different arrangements of operational and broken springs that meet the given criteria. What is the sum of those counts?
+
+--- Part Two ---
+As you look out at the field of springs, you feel like there are way more springs than the condition records list. When you examine the records, you discover that they were actually folded up this whole time!
+
+To unfold the records, on each row, replace the list of spring conditions with five copies of itself (separated by ?) and replace the list of contiguous groups of damaged springs with five copies of itself (separated by ,).
+
+So, this row:
+
+.# 1
+Would become:
+
+.#?.#?.#?.#?.# 1,1,1,1,1
+The first line of the above example would become:
+
+???.###????.###????.###????.###????.### 1,1,3,1,1,3,1,1,3,1,1,3,1,1,3
+In the above example, after unfolding, the number of possible arrangements for some rows is now much larger:
+
+???.### 1,1,3 - 1 arrangement
+.??..??...?##. 1,1,3 - 16384 arrangements
+?#?#?#?#?#?#?#? 1,3,1,6 - 1 arrangement
+????.#...#... 4,1,1 - 16 arrangements
+????.######..#####. 1,6,5 - 2500 arrangements
+?###???????? 3,2,1 - 506250 arrangements
+After unfolding, adding all of the possible arrangement counts together produces 525152.
+
+Unfold your condition records; what is the new sum of possible arrangement counts?
  */
 
 class HotSprings {
@@ -95,58 +121,89 @@ class HotSpringsRow {
         this.row = row
     }
 
-    int countArrangements() {
+    HotSpringsRow unfold() {
+        String originalSprings = this.row.split(" ")[0]
+        String originalGroups = this.row.split(" ")[1]
+
+        List<String> springsList = []
+        List<String> groupsList = []
+
+        for (int i = 0; i < 5; i++) {
+            springsList.add(originalSprings)
+            groupsList.add(originalGroups)
+        }
+
+        String springs = springsList.join("?")
+        String groups = groupsList.join(",")
+
+        this.row = springs + " " + groups
+        return this
+    }
+
+    long countArrangements() {
         String springs = this.row.split(" ")[0]
         List<Integer> groups = this.row.split(" ")[1].split(",").collect { it as Integer }
 
-        return countArrangementsRecursive(springs, groups, 0)
+        Map<String, Long> memo = [:]
+        return countArrangementsRecursive(springs, groups, 0, 0, 0, memo)
     }
 
-    private int countArrangementsRecursive(String springs, List<Integer> groups, int pos) {
-        // Base case: processed entire string
+    private long countArrangementsRecursive(String springs, List<Integer> groups,
+                                           int pos, int groupIndex, int currentGroupSize,
+                                           Map<String, Long> memo) {
+        // Create memoization key
+        String key = "${pos},${groupIndex},${currentGroupSize}"
+        if (memo.containsKey(key)) {
+            return memo[key]
+        }
+
+        // Base case: reached end of string
         if (pos == springs.length()) {
-            return isValid(springs, groups) ? 1 : 0
+            // Valid if we've matched all groups and no current group in progress
+            if (groupIndex == groups.size() && currentGroupSize == 0) {
+                return 1
+            }
+            // Or if we're on the last group and it matches exactly
+            if (groupIndex == groups.size() - 1 && currentGroupSize == groups[groupIndex]) {
+                return 1
+            }
+            return 0
         }
 
-        // If current position is not '?', continue to next position
-        if (springs.charAt(pos) != '?') {
-            return countArrangementsRecursive(springs, groups, pos + 1)
+        long count = 0
+        char current = springs.charAt(pos)
+
+        // Try both possibilities for '?', or just the specific char for '.' or '#'
+        List<Character> possibilities = []
+        if (current == '?') {
+            possibilities = ['.', '#']
+        } else {
+            possibilities = [current]
         }
 
-        // Current position is '?', try both '.' and '#'
-        int count = 0
-
-        // Try '.'
-        String withDot = springs.substring(0, pos) + '.' + springs.substring(pos + 1)
-        count += countArrangementsRecursive(withDot, groups, pos + 1)
-
-        // Try '#'
-        String withHash = springs.substring(0, pos) + '#' + springs.substring(pos + 1)
-        count += countArrangementsRecursive(withHash, groups, pos + 1)
-
-        return count
-    }
-
-    private boolean isValid(String springs, List<Integer> expectedGroups) {
-        // Find all contiguous groups of '#'
-        List<Integer> actualGroups = []
-        int currentGroupSize = 0
-
-        for (int i = 0; i < springs.length(); i++) {
-            if (springs.charAt(i) == '#') {
-                currentGroupSize++
-            } else if (currentGroupSize > 0) {
-                actualGroups.add(currentGroupSize)
-                currentGroupSize = 0
+        for (char c : possibilities) {
+            if (c == '#') {
+                // Add to current group
+                count += countArrangementsRecursive(springs, groups, pos + 1, groupIndex,
+                                                   currentGroupSize + 1, memo)
+            } else { // c == '.'
+                if (currentGroupSize > 0) {
+                    // End of a group - check if it matches expected size
+                    if (groupIndex < groups.size() && currentGroupSize == groups[groupIndex]) {
+                        count += countArrangementsRecursive(springs, groups, pos + 1,
+                                                           groupIndex + 1, 0, memo)
+                    }
+                    // Otherwise invalid, contributes 0
+                } else {
+                    // Just continue - no group in progress
+                    count += countArrangementsRecursive(springs, groups, pos + 1,
+                                                       groupIndex, 0, memo)
+                }
             }
         }
 
-        // Don't forget the last group if string ends with '#'
-        if (currentGroupSize > 0) {
-            actualGroups.add(currentGroupSize)
-        }
-
-        return actualGroups == expectedGroups
+        memo[key] = count
+        return count
     }
 }
 
@@ -158,12 +215,20 @@ static void main(String[] args) {
 
         HotSprings hotSprings = new HotSprings(input)
 
-        int totalArrangements = 0
+        long totalArrangements = 0
         for (HotSpringsRow row : hotSprings.rows) {
             totalArrangements += row.countArrangements()
         }
 
         println("Part 1: ${totalArrangements}")
+
+        totalArrangements = 0
+        for (HotSpringsRow row : hotSprings.rows) {
+            row.unfold()
+            totalArrangements += row.countArrangements()
+        }
+
+        println("Part 2: ${totalArrangements}")
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
