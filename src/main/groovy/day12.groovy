@@ -75,19 +75,95 @@ For each row, count all of the different arrangements of operational and broken 
  */
 
 class HotSprings {
+    List<HotSpringsRow> rows = []
 
-    // TODO: Implement solution
+    HotSprings(String input) {
+       List<String> lines = input.split("\\r\\n|\\n|\\r")
+        for (int row = 0; row < lines.size(); row++) {
+            rows.add(new HotSpringsRow(lines[row]))
+        }
+    }
 
+    HotSpringsRow getHotSpringsRow(int row) {
+        rows[row]
+    }
+}
+
+class HotSpringsRow {
+    String row = ""
+    HotSpringsRow(String row) {
+        this.row = row
+    }
+
+    int countArrangements() {
+        String springs = this.row.split(" ")[0]
+        List<Integer> groups = this.row.split(" ")[1].split(",").collect { it as Integer }
+
+        return countArrangementsRecursive(springs, groups, 0)
+    }
+
+    private int countArrangementsRecursive(String springs, List<Integer> groups, int pos) {
+        // Base case: processed entire string
+        if (pos == springs.length()) {
+            return isValid(springs, groups) ? 1 : 0
+        }
+
+        // If current position is not '?', continue to next position
+        if (springs.charAt(pos) != '?') {
+            return countArrangementsRecursive(springs, groups, pos + 1)
+        }
+
+        // Current position is '?', try both '.' and '#'
+        int count = 0
+
+        // Try '.'
+        String withDot = springs.substring(0, pos) + '.' + springs.substring(pos + 1)
+        count += countArrangementsRecursive(withDot, groups, pos + 1)
+
+        // Try '#'
+        String withHash = springs.substring(0, pos) + '#' + springs.substring(pos + 1)
+        count += countArrangementsRecursive(withHash, groups, pos + 1)
+
+        return count
+    }
+
+    private boolean isValid(String springs, List<Integer> expectedGroups) {
+        // Find all contiguous groups of '#'
+        List<Integer> actualGroups = []
+        int currentGroupSize = 0
+
+        for (int i = 0; i < springs.length(); i++) {
+            if (springs.charAt(i) == '#') {
+                currentGroupSize++
+            } else if (currentGroupSize > 0) {
+                actualGroups.add(currentGroupSize)
+                currentGroupSize = 0
+            }
+        }
+
+        // Don't forget the last group if string ends with '#'
+        if (currentGroupSize > 0) {
+            actualGroups.add(currentGroupSize)
+        }
+
+        return actualGroups == expectedGroups
+    }
 }
 
 static void main(String[] args) {
     try {
         String filePath = "../../../input/day12.txt"
         File file = new File(filePath)
+        String input = file.text
 
-        // TODO: Parse input and solve
+        HotSprings hotSprings = new HotSprings(input)
 
-        println("Part 1: [NOT IMPLEMENTED]")
+        int totalArrangements = 0
+        for (HotSpringsRow row : hotSprings.rows) {
+            totalArrangements += row.countArrangements()
+        }
+
+        println("Part 1: ${totalArrangements}")
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)

@@ -9,11 +9,43 @@ class Day12Specification extends Specification {
 ????.######..#####. 1,6,5
 ?###???????? 3,2,1"""
 
-    def "example test - sum of arrangement counts is 21"() {
+    def "sum of arrangement counts is 21"() {
         given:
-        // TODO: Implement test
+        HotSprings hotSprings = new HotSprings(EXAMPLE_INPUT)
 
         expect:
         true // Replace with actual test when implemented
+    }
+
+    def "first row arrangement counts"() {
+        given:
+        HotSprings hotSprings = new HotSprings(EXAMPLE_INPUT)
+
+        expect:
+        hotSprings.getHotSpringsRow(0).countArrangements() == 1
+    }
+
+    def "second row arrangement count"() {
+        given:
+        HotSprings hotSprings = new HotSprings(EXAMPLE_INPUT)
+
+        expect:
+        hotSprings.getHotSpringsRow(1).countArrangements() == 4
+    }
+
+    def "last row arrangement count"() {
+        given:
+        HotSprings hotSprings = new HotSprings(EXAMPLE_INPUT)
+
+        expect:
+        hotSprings.getHotSpringsRow(5).countArrangements() == 10
+    }
+
+    def "get first row"() {
+        given:
+        HotSprings hotSprings = new HotSprings(EXAMPLE_INPUT)
+
+        expect:
+        hotSprings.getHotSpringsRow(0).row == "???.### 1,1,3"
     }
 }
