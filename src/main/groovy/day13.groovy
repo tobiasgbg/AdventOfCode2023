@@ -146,7 +146,7 @@ class Pattern {
     }
 
     Integer countDifferences(String first, String second) {
-        [first, second].transpose().count { it[0] != it[1] }
+        [first.toList(), second.toList()].transpose().count { it[0] != it[1] }
     }
 
     Integer findHorizontalReflection() {
