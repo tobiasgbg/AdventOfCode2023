@@ -26,6 +26,28 @@ class Day13Specification extends Specification {
         poi.summarize() == 405
     }
 
+    def "sum of reflections with smudge is 400"() {
+        given:
+        PointOfIncidence poi = new PointOfIncidence(EXAMPLE_INPUT, true)
+
+        expect:
+        poi.summarize() == 400
+    }
+
+    def "first pattern"() {
+        given:
+        PointOfIncidence poi = new PointOfIncidence(EXAMPLE_INPUT)
+
+        expect:
+        poi.getPattern(0) == """#.##..##.
+..#.##.#.
+##......#
+##......#
+..#.##.#.
+..##..##.
+#.#.##.#."""
+    }
+
     def "first pattern has vertical reflection at column 5"() {
         given:
         PointOfIncidence poi = new PointOfIncidence(EXAMPLE_INPUT)
