@@ -172,6 +172,10 @@ class LensLibrary {
 
     }
 
+    Integer calculateFocusingPower() {
+        0
+    }
+
     Box getBox(Integer index) {
         boxes[index]
     }
@@ -197,7 +201,7 @@ class Box {
     Integer focalLength = 0
 
     Integer size() {
-        0
+        lenses.size()
     }
 }
 
