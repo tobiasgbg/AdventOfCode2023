@@ -49,22 +49,214 @@ O..#.OO...  7
 The total load is the sum of the load caused by all of the rounded rocks. In this example, the total load is 136.
 
 Tilt the platform so that the rounded rocks all roll north. Afterward, what is the total load on the north support beams?
+
+--- Part Two ---
+The parabolic reflector dish deforms, but not in a way that focuses the beam. To do that, you'll need to move the rocks to the edges of the platform. Fortunately, a button on the side of the control panel labeled "spin cycle" attempts to do just that!
+
+Each cycle tilts the platform four times so that the rounded rocks roll north, then west, then south, then east. After each tilt, the rounded rocks roll as far as they can before the platform tilts in the next direction. After one cycle, the platform will have finished rolling the rounded rocks in those four directions in that order.
+
+Here's what happens in the example above after each of the first few cycles:
+
+After 1 cycle:
+.....#....
+....#...O#
+...OO##...
+.OO#......
+.....OOO#.
+.O#...O#.#
+....O#....
+......OOOO
+#...O###..
+#..OO#....
+
+After 2 cycles:
+.....#....
+....#...O#
+.....##...
+..O#......
+.....OOO#.
+.O#...O#.#
+....O#...O
+.......OOO
+#..OO###..
+#.OOO#...O
+
+After 3 cycles:
+.....#....
+....#...O#
+.....##...
+..O#......
+.....OOO#.
+.O#...O#.#
+....O#...O
+.......OOO
+#...O###.O
+#.OOO#...O
+This process should work if you leave it running long enough, but you're still worried about the north support beams. To make sure they'll survive for a while, you need to calculate the total load on the north support beams after 1000000000 cycles.
+
+In the above example, after 1000000000 cycles, the total load on the north support beams is 64.
+
+Run the spin cycle for 1000000000 cycles. Afterward, what is the total load on the north support beams?
  */
 
 class ParabolicReflectorDish {
+    List<String> lines = []
 
-    // TODO: Implement solution
+    ParabolicReflectorDish(String input) {
+        this.lines = input.split("\\r\\n|\\n|\\r")
+    }
 
+    private def tiltNorthInternal(List<List<Character>> grid) {
+        boolean changed = true
+        while (changed) {
+            changed = false
+            for (int row = 1; row < grid.size(); row++) {
+                for (int column = 0; column < grid[row].size(); column++) {
+                    if (grid[row][column] == 'O' && grid[row-1][column] == '.') {
+                        grid[row-1][column] = 'O'
+                        grid[row][column] = '.'
+                        changed = true
+                    }
+                }
+            }
+        }
+    }
+
+    private List<List<Character>> rotateClockwise(List<List<Character>> grid) {
+        int rows = grid.size()
+        int cols = grid[0].size()
+        List<List<Character>> rotated = []
+        for (int col = 0; col < cols; col++) {
+            List<Character> newRow = []
+            for (int row = rows - 1; row >= 0; row--) {
+                newRow.add(grid[row][col])
+            }
+            rotated.add(newRow)
+        }
+        return rotated
+    }
+
+    private List<List<Character>> rotateCounterClockwise(List<List<Character>> grid) {
+        int rows = grid.size()
+        int cols = grid[0].size()
+        List<List<Character>> rotated = []
+        for (int col = cols - 1; col >= 0; col--) {
+            List<Character> newRow = []
+            for (int row = 0; row < rows; row++) {
+                newRow.add(grid[row][col])
+            }
+            rotated.add(newRow)
+        }
+        return rotated
+    }
+
+    def spinCycle() {
+        tiltNorth()
+        tiltWest()
+        tiltSouth()
+        tiltEast()
+    }
+
+    def spinCycles(long n) {
+        Map<String, Long> seenStates = [:]
+        long cycleStart = -1
+        long cycleLength = -1
+
+        for (long i = 0; i < n; i++) {
+            String state = toString()
+
+            if (seenStates.containsKey(state)) {
+                cycleStart = seenStates[state]
+                cycleLength = i - cycleStart
+                break
+            }
+
+            seenStates[state] = i
+            spinCycle()
+        }
+
+        // If we found a cycle, calculate where we'd be after n cycles
+        if (cycleStart != -1) {
+            long remaining = (n - cycleStart) % cycleLength
+
+            // We're currently at position cycleStart + cycleLength
+            // We need to run 'remaining' more cycles from cycleStart
+            // So we need to run (remaining - cycleLength) more from current position
+            // But since remaining < cycleLength, we actually need to go back
+            // Easier: just find the state at cycleStart + remaining in our map
+            String targetState = seenStates.find { it.value == cycleStart + remaining }?.key
+
+            if (targetState != null) {
+                this.lines = targetState.split('\n').toList()
+            }
+        }
+    }
+
+    def tiltNorth() {
+        List<List<Character>> grid = lines.collect { it.toList() }
+        tiltNorthInternal(grid)
+        lines = grid.collect { it.join() }
+    }
+
+    def tiltWest() {
+        List<List<Character>> grid = lines.collect { it.toList() }
+        grid = rotateClockwise(grid)
+        tiltNorthInternal(grid)
+        grid = rotateCounterClockwise(grid)
+        lines = grid.collect { it.join() }
+    }
+
+    def tiltSouth() {
+        List<List<Character>> grid = lines.collect { it.toList() }
+        grid = rotateClockwise(rotateClockwise(grid))
+        tiltNorthInternal(grid)
+        grid = rotateCounterClockwise(rotateCounterClockwise(grid))
+        lines = grid.collect { it.join() }
+    }
+
+    def tiltEast() {
+        List<List<Character>> grid = lines.collect { it.toList() }
+        grid = rotateCounterClockwise(grid)
+        tiltNorthInternal(grid)
+        grid = rotateClockwise(grid)
+        lines = grid.collect { it.join() }
+    }
+
+    Integer calculateLoad() {
+        Integer load = 0
+        for (int row = 0; row < lines.size(); row++) {
+            for (int column = 0; column < lines[row].size(); column++) {
+                if (lines[row][column] == 'O') {
+                    load += lines.size() - row
+                }
+            }
+        }
+        load
+    }
+
+    @Override
+    String toString() {
+        lines.join('\n')
+    }
 }
 
 static void main(String[] args) {
     try {
         String filePath = "../../../input/day14.txt"
         File file = new File(filePath)
+        String input = file.text
 
-        // TODO: Parse input and solve
+        // Part 1
+        ParabolicReflectorDish dish1 = new ParabolicReflectorDish(input)
+        dish1.tiltNorth()
+        Integer load1 = dish1.calculateLoad()
+        println("Part 1: ${load1}")
 
-        println("Part 1: [NOT IMPLEMENTED]")
+        // Part 2
+        ParabolicReflectorDish dish2 = new ParabolicReflectorDish(input)
+        dish2.spinCycles(1_000_000_000)
+        Integer load2 = dish2.calculateLoad()
+        println("Part 2: ${load2}")
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
