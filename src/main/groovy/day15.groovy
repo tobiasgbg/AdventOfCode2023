@@ -169,11 +169,32 @@ class LensLibrary {
     }
 
     def processSteps() {
-
+        for (String step in steps) {
+            if (step.contains('-')) {
+                String label = step.replace('-', '')
+                Integer boxNum = hash(label)
+                Lens lens = new Lens(label, 0)
+                boxes[boxNum].removeLens(lens)
+            } else {
+                def parts = step.split('=')
+                String label = parts[0]
+                Integer focalLength = parts[1] as Integer
+                Integer boxNum = hash(label)
+                Lens lens = new Lens(label, focalLength)
+                boxes[boxNum].addLens(lens)
+            }
+        }
     }
 
     Integer calculateFocusingPower() {
-        0
+        Integer totalPower = 0
+        boxes.eachWithIndex { box, boxIndex ->
+            box.lenses.eachWithIndex { lens, lensIndex ->
+                Integer power = (boxIndex + 1) * (lensIndex + 1) * lens.focalLength
+                totalPower += power
+            }
+        }
+        totalPower
     }
 
     Box getBox(Integer index) {
@@ -189,10 +210,26 @@ class Lens {
     String label
     Integer focalLength
 
-    Lens(String label, Integer focalLength) {
+    Lens(String label, Integer focalLength = 0) {
         this.label = label
         this.focalLength = focalLength
     }
+
+    @Override
+      boolean equals(Object other) {
+          if (!(other instanceof Lens)) return false
+          return this.label == ((Lens) other).label
+      }
+
+      @Override
+      int hashCode() {
+          return label.hashCode()
+      }
+
+      @Override
+      String toString() {
+          return "[${label} ${focalLength}]"
+      }
 }
   
 class Box {
@@ -203,6 +240,25 @@ class Box {
     Integer size() {
         lenses.size()
     }
+
+    Lens getAt(Integer index) {
+          lenses[index]
+    }
+
+    def removeLens(Lens lens) {
+        if (lens in lenses) {
+            lenses.remove(lens)
+        }
+    }
+
+    def addLens(Lens lens) {
+      def existingIndex = lenses.findIndexOf { it.label == lens.label }
+      if (existingIndex >= 0) {
+          lenses[existingIndex].focalLength = lens.focalLength
+      } else {
+          lenses.add(lens)
+      }
+  }
 }
 
 static void main(String[] args) {
@@ -215,6 +271,11 @@ static void main(String[] args) {
         Integer result = library.sumOfHashResults()
 
         println("Part 1: ${result}")
+
+        library.processSteps()
+        Integer result2 = library.calculateFocusingPower()
+
+        println("Part 2: ${result2}")
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)

@@ -69,9 +69,12 @@ class Day15Specification extends Specification {
 
         when:
         library.processSteps()
+        def box3 = library.getBox(3)
+        def otLens = box3.lenses.find { it.label == "ot" }
 
         then:
-        library.getBox(3).find { it.label == "ot" }.focalLength == 7
+        otLens != null
+        otLens.focalLength == 7
     }
 
     def "focusing power calculation"() {
