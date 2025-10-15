@@ -22,7 +22,7 @@ class Day16Specification extends Specification {
         contraption.grid[0] == ".|...\\...."
     }
 
-    def "simple vertical line energizes 3 tiles"() {
+    def "simple vertical line energizes 4 tiles"() {
         given:
         def input = '''.|.
 ...
@@ -30,7 +30,7 @@ class Day16Specification extends Specification {
         Contraption contraption = new Contraption(input)
 
         expect:
-        contraption.countEnergizedTiles() == 3
+        contraption.countEnergizedTiles() == 4  // (0,0), (0,1), (1,1), (2,1)
     }
 
     def "beam reflects off / mirror"() {
@@ -52,7 +52,7 @@ class Day16Specification extends Specification {
         Contraption contraption = new Contraption(input)
 
         expect:
-        contraption.countEnergizedTiles() == 3
+        contraption.countEnergizedTiles() == 4  // (0,0), (0,1), (1,1), (2,1)
     }
 
     def "beam splits on | going right"() {
@@ -63,7 +63,7 @@ class Day16Specification extends Specification {
         Contraption contraption = new Contraption(input)
 
         expect:
-        contraption.countEnergizedTiles() == 3
+        contraption.countEnergizedTiles() == 4  // Same as "simple vertical line"
     }
 
     def "beam passes through - going right"() {

@@ -57,15 +57,138 @@ Ultimately, in this example, 46 tiles become energized.
 The light isn't energizing enough tiles to produce lava; to debug the contraption, you need to start by analyzing the current situation. With the beam starting in the top-left heading right, how many tiles end up being energized?
  */
 
+enum Direction {
+    UP, DOWN, LEFT, RIGHT
+}
+
 class Contraption {
     List<String> grid = []
+    List<Beam> beams = []
 
     Contraption(String input) {
         this.grid = input.split('\n').collect { it.trim() }
+        Beam beam = new Beam(0,-1, Direction.RIGHT)
+        beams.add(beam)
     }
 
     Integer countEnergizedTiles() {
-        0
+        Set<String> visited = new HashSet<>()  // Track "row,col,direction" to detect cycles
+        Set<String> energized = new HashSet<>() // Track "row,col" for energized tiles
+        Queue<Beam> queue = new LinkedList<>()
+        queue.add(new Beam(0, -1, Direction.RIGHT))
+
+        while (!queue.isEmpty()) {
+            Beam beam = queue.poll()
+            beam.move()
+
+            // Check bounds
+            if (beam.row < 0 || beam.row >= grid.size() ||
+                beam.column < 0 || beam.column >= grid[0].length()) {
+                continue
+            }
+
+            // Check for cycles
+            String state = "${beam.row},${beam.column},${beam.direction}"
+            if (visited.contains(state)) {
+                continue
+            }
+            visited.add(state)
+
+            // Mark as energized
+            energized.add("${beam.row},${beam.column}")
+
+            // Get current tile
+            char tile = grid[beam.row].charAt(beam.column)
+
+            // Process tile based on beam direction and tile type
+            switch(tile) {
+                case '.':
+                    // Empty space - continue in same direction
+                    queue.add(new Beam(beam.row, beam.column, beam.direction))
+                    break
+
+                case '/':
+                    // Mirror - reflect beam
+                    Direction newDir = null
+                    switch(beam.direction) {
+                        case Direction.RIGHT: newDir = Direction.UP; break
+                        case Direction.LEFT: newDir = Direction.DOWN; break
+                        case Direction.UP: newDir = Direction.RIGHT; break
+                        case Direction.DOWN: newDir = Direction.LEFT; break
+                    }
+                    queue.add(new Beam(beam.row, beam.column, newDir))
+                    break
+
+                case '\\':
+                    // Mirror - reflect beam
+                    Direction newDir2 = null
+                    switch(beam.direction) {
+                        case Direction.RIGHT: newDir2 = Direction.DOWN; break
+                        case Direction.LEFT: newDir2 = Direction.UP; break
+                        case Direction.UP: newDir2 = Direction.LEFT; break
+                        case Direction.DOWN: newDir2 = Direction.RIGHT; break
+                    }
+                    queue.add(new Beam(beam.row, beam.column, newDir2))
+                    break
+
+                case '|':
+                    // Vertical splitter
+                    if (beam.direction == Direction.LEFT || beam.direction == Direction.RIGHT) {
+                        // Split into up and down
+                        queue.add(new Beam(beam.row, beam.column, Direction.UP))
+                        queue.add(new Beam(beam.row, beam.column, Direction.DOWN))
+                    } else {
+                        // Continue in same direction (up or down)
+                        queue.add(new Beam(beam.row, beam.column, beam.direction))
+                    }
+                    break
+
+                case '-':
+                    // Horizontal splitter
+                    if (beam.direction == Direction.UP || beam.direction == Direction.DOWN) {
+                        // Split into left and right
+                        queue.add(new Beam(beam.row, beam.column, Direction.LEFT))
+                        queue.add(new Beam(beam.row, beam.column, Direction.RIGHT))
+                    } else {
+                        // Continue in same direction (left or right)
+                        queue.add(new Beam(beam.row, beam.column, beam.direction))
+                    }
+                    break
+            }
+        }
+
+        return energized.size()
+    }
+}
+
+class Beam {
+    Integer row = 0
+    Integer column = 0
+    Direction direction
+    Boolean active = false
+
+    Beam (Integer row, Integer column, Direction direction, Boolean active = true){
+        this.row = row
+        this.column = column
+        this.direction = direction
+        this.active = active
+    }
+
+    def move() {
+        switch(direction) {
+            case Direction.UP:
+                row--
+                break
+            case Direction.DOWN:
+                row++
+                break
+            case Direction.LEFT:
+                column--
+                break
+            case Direction.RIGHT:
+                column++
+                break
+        }
     }
 }
 
