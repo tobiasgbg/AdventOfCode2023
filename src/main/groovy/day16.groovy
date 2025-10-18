@@ -55,6 +55,37 @@ Beams are only shown on empty tiles; arrows indicate the direction of the beams.
 Ultimately, in this example, 46 tiles become energized.
 
 The light isn't energizing enough tiles to produce lava; to debug the contraption, you need to start by analyzing the current situation. With the beam starting in the top-left heading right, how many tiles end up being energized?
+
+--- Part Two ---
+As you try to work out what might be wrong, the reindeer tugs on your shirt and leads you to a nearby control panel. There, a collection of buttons lets you align the contraption so that the beam enters from any edge tile and heading away from that edge. (You can choose either of two directions for the beam if it starts on a corner; for instance, if the beam starts in the bottom-right corner, it can start heading either left or upward.)
+
+So, the beam could start on any tile in the top row (heading downward), any tile in the bottom row (heading upward), any tile in the leftmost column (heading right), or any tile in the rightmost column (heading left). To produce lava, you need to find the configuration that energizes as many tiles as possible.
+
+In the above example, this can be achieved by starting the beam in the fourth tile from the left in the top row:
+
+.|<2<\....
+|v-v\^....
+.v.v.|->>>
+.v.v.v^.|.
+.v.v.v^...
+.v.v.v^..\
+.v.v/2\\..
+<-2-/vv|..
+.|<<<2-|.\
+.v//.|.v..
+Using this configuration, 51 tiles are energized:
+
+.#####....
+.#.#.#....
+.#.#.#####
+.#.#.##...
+.#.#.##...
+.#.#.##...
+.#.#####..
+########..
+.#######..
+.#...#.#..
+Find the initial beam configuration that energizes the largest number of tiles; how many tiles are energized in that configuration?
  */
 
 enum Direction {
@@ -71,11 +102,43 @@ class Contraption {
         beams.add(beam)
     }
 
-    Integer countEnergizedTiles() {
+    Integer findMaxEnergizedTiles() {
+      Integer maxTiles = 0
+      Integer rows = grid.size()
+      Integer cols = grid[0].length()
+
+      // Try top edge (heading down)
+      for (int column = 0; column < cols; column++) {
+          Integer tiles = countEnergizedTiles(-1, column, Direction.DOWN)
+          maxTiles = Integer.max(maxTiles, tiles)
+      }
+
+      // Try bottom edge (heading up)
+      for (int column = 0; column < cols; column++) {
+          Integer tiles = countEnergizedTiles(rows, column, Direction.UP)
+          maxTiles = Integer.max(maxTiles, tiles)
+      }
+
+      // Try left edge (heading right)
+      for (int row = 0; row < rows; row++) {
+          Integer tiles = countEnergizedTiles(row, -1, Direction.RIGHT)
+          maxTiles = Integer.max(maxTiles, tiles)
+      }
+
+      // Try right edge (heading left)
+      for (int row = 0; row < rows; row++) {
+          Integer tiles = countEnergizedTiles(row, cols, Direction.LEFT)
+          maxTiles = Integer.max(maxTiles, tiles)
+      }
+
+      return maxTiles
+    }
+
+    Integer countEnergizedTiles(Integer row = 0, Integer column = -1, Direction direction = Direction.RIGHT) {
         Set<String> visited = new HashSet<>()  // Track "row,col,direction" to detect cycles
         Set<String> energized = new HashSet<>() // Track "row,col" for energized tiles
         Queue<Beam> queue = new LinkedList<>()
-        queue.add(new Beam(0, -1, Direction.RIGHT))
+        queue.add(new Beam(row, column, direction))
 
         while (!queue.isEmpty()) {
             Beam beam = queue.poll()
@@ -202,6 +265,10 @@ static void main(String[] args) {
         Integer result = contraption.countEnergizedTiles()
 
         println("Part 1: ${result}")
+
+        Integer result2 = contraption.findMaxEnergizedTiles()
+
+        println("Part 2: ${result2}")
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
