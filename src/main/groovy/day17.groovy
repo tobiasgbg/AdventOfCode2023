@@ -66,10 +66,20 @@ enum CrucibleDirection {
 
 class ClumsyCrucible {
     List<List<Integer>> grid = []
+    boolean debug = false
 
-    ClumsyCrucible(String input) {
+    ClumsyCrucible(String input, boolean debug = false) {
         this.grid = input.split('\n').collect { line ->
             line.trim().toList().collect { it as String as Integer }
+        }
+        this.debug = debug
+
+        if (debug) {
+            println("\n=== Grid (${grid.size()}x${grid[0].size()}) ===")
+            grid.eachWithIndex { row, idx ->
+                println("${idx}: ${row.join(' ')}")
+            }
+            println()
         }
     }
 
@@ -100,33 +110,50 @@ class ClumsyCrucible {
       Set<State> visited = new HashSet<>()
       Map<State, Integer> distances = new HashMap<>()
 
+      if (debug) println("=== Starting Dijkstra's Algorithm ===")
+
       // Start with two initial states: going RIGHT or DOWN
       queue.add(new CrucibleNode(0, 0, CrucibleDirection.RIGHT, 0, 0))
       queue.add(new CrucibleNode(0, 0, CrucibleDirection.DOWN, 0, 0))
 
+      int iteration = 0
       while (!queue.isEmpty()) {
           CrucibleNode current = queue.poll()
+          iteration++
+
+          if (debug) {
+              println("\n[${iteration}] Processing: (${current.row},${current.col}) ${current.direction} steps=${current.consecutiveSteps} heat=${current.heatLoss}")
+          }
 
           // Reached destination?
           if (current.row == grid.size()-1 && current.col == grid[0].size()-1) {
+              if (debug) println(">>> DESTINATION REACHED! Total heat loss: ${current.heatLoss}")
               return current.heatLoss
           }
 
           // Skip if visited
           State state = new State(current.row, current.col, current.direction, current.consecutiveSteps)
           if (visited.contains(state)) {
+            if (debug) println("    (already visited, skipping)")
             continue
           }
 
           visited.add(state)
+
+          int neighborsAdded = 0
 
           // Continue straight (only if we haven't moved 3 times in same direction)
           if (current.consecutiveSteps < 3) {
             int newRow = current.row + current.direction.dr
             int newCol = current.col + current.direction.dc
             if (inBounds(newRow, newCol)) {
-                queue.add(new CrucibleNode(newRow, newCol, current.direction, current.consecutiveSteps + 1, current.heatLoss + grid[newRow][newCol]))
+                int newHeat = current.heatLoss + grid[newRow][newCol]
+                queue.add(new CrucibleNode(newRow, newCol, current.direction, current.consecutiveSteps + 1, newHeat))
+                if (debug) println("    → Continue ${current.direction}: (${newRow},${newCol}) heat=${newHeat}")
+                neighborsAdded++
             }
+          } else {
+              if (debug) println("    ✗ Cannot continue straight (already 3 steps)")
           }
 
           // Turn left or right (always allowed, resets consecutive steps to 1)
@@ -134,8 +161,15 @@ class ClumsyCrucible {
               int newRow = current.row + newDir.dr
               int newCol = current.col + newDir.dc
               if (inBounds(newRow, newCol)) {
-                  queue.add(new CrucibleNode(newRow, newCol, newDir, 1, current.heatLoss + grid[newRow][newCol]))
+                  int newHeat = current.heatLoss + grid[newRow][newCol]
+                  queue.add(new CrucibleNode(newRow, newCol, newDir, 1, newHeat))
+                  if (debug) println("    → Turn to ${newDir}: (${newRow},${newCol}) heat=${newHeat}")
+                  neighborsAdded++
               }
+          }
+
+          if (debug && neighborsAdded == 0) {
+              println("    (dead end)")
           }
     }
 

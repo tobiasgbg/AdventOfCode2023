@@ -51,7 +51,7 @@ class Day17Specification extends Specification {
 9991
 9991
 1111'''
-        ClumsyCrucible crucible = new ClumsyCrucible(input)
+        ClumsyCrucible crucible = new ClumsyCrucible(input, true)  // Enable debug
 
         expect:
         // Must turn after 3 blocks, can't go straight across top
