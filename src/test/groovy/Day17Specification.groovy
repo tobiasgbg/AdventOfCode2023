@@ -37,12 +37,34 @@ class Day17Specification extends Specification {
         crucible.findMinimumHeatLoss() == 18  // Right then Down: 9 + 9 = 18
     }
 
+    def "small grid minimum heat loss - ultra crucible"() {
+        given:
+        def input = '''111111111111
+999999999991
+999999999991
+999999999991
+999999999991'''
+
+        ClumsyCrucible crucible = new ClumsyCrucible(input)
+
+        expect:
+        crucible.findMinimumHeatLoss(true) == 71
+    }
+
     def "example input has minimum heat loss of 102"() {
         given:
         ClumsyCrucible crucible = new ClumsyCrucible(EXAMPLE_INPUT)
 
         expect:
         crucible.findMinimumHeatLoss() == 102
+    }
+
+    def "example input with ultra crucible has minimum heat loss of 94"() {
+        given:
+        ClumsyCrucible crucible = new ClumsyCrucible(EXAMPLE_INPUT)
+
+        expect:
+        crucible.findMinimumHeatLoss(true) == 94
     }
 
     def "cannot move more than 3 blocks in same direction"() {

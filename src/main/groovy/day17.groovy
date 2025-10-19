@@ -49,6 +49,49 @@ One way to minimize heat loss is this path:
 This path never moves more than three consecutive blocks in the same direction and incurs a heat loss of only 102.
 
 Directing the crucible from the lava pool to the machine parts factory, but not moving more than three consecutive blocks in the same direction, what is the least heat loss it can incur?
+
+--- Part Two ---
+The crucibles of lava simply aren't large enough to provide an adequate supply of lava to the machine parts factory. Instead, the Elves are going to upgrade to ultra crucibles.
+
+Ultra crucibles are even more difficult to steer than normal crucibles. Not only do they have trouble going in a straight line, but they also have trouble turning!
+
+Once an ultra crucible starts moving in a direction, it needs to move a minimum of four blocks in that direction before it can turn (or even before it can stop at the end). However, it will eventually start to get wobbly: an ultra crucible can move a maximum of ten consecutive blocks without turning.
+
+In the above example, an ultra crucible could follow this path to minimize heat loss:
+
+2>>>>>>>>1323
+32154535v5623
+32552456v4254
+34465858v5452
+45466578v>>>>
+143859879845v
+445787698776v
+363787797965v
+465496798688v
+456467998645v
+122468686556v
+254654888773v
+432267465553v
+In the above example, an ultra crucible would incur the minimum possible heat loss of 94.
+
+Here's another example:
+
+111111111111
+999999999991
+999999999991
+999999999991
+999999999991
+Sadly, an ultra crucible would need to take an unfortunate path like this one:
+
+1>>>>>>>1111
+9999999v9991
+9999999v9991
+9999999v9991
+9999999v>>>>
+This route causes the ultra crucible to incur the minimum possible heat loss of 71.
+
+Directing the ultra crucible from the lava pool to the machine parts factory, what is the least heat loss it can incur?
+
  */
 
 enum CrucibleDirection {
@@ -105,7 +148,10 @@ class ClumsyCrucible {
       }
     }
 
-    Integer findMinimumHeatLoss() {
+    Integer findMinimumHeatLoss(boolean ultraCrucible = false) {
+      int minSteps = ultraCrucible ? 4 : 0
+      int maxSteps = ultraCrucible ? 10 : 3
+
       PriorityQueue<CrucibleNode> queue = new PriorityQueue<>()
       Set<State> visited = new HashSet<>()
       Map<State, Integer> distances = new HashMap<>()
@@ -126,7 +172,8 @@ class ClumsyCrucible {
           }
 
           // Reached destination?
-          if (current.row == grid.size()-1 && current.col == grid[0].size()-1) {
+          if (current.row == grid.size()-1 && current.col == grid[0].size()-1 
+                && current.consecutiveSteps >= minSteps) {
               if (debug) println(">>> DESTINATION REACHED! Total heat loss: ${current.heatLoss}")
               return current.heatLoss
           }
@@ -142,8 +189,8 @@ class ClumsyCrucible {
 
           int neighborsAdded = 0
 
-          // Continue straight (only if we haven't moved 3 times in same direction)
-          if (current.consecutiveSteps < 3) {
+          // Continue straight (only if we haven't exceeded maxSteps)
+          if (current.consecutiveSteps < maxSteps) {
             int newRow = current.row + current.direction.dr
             int newCol = current.col + current.direction.dc
             if (inBounds(newRow, newCol)) {
@@ -153,19 +200,23 @@ class ClumsyCrucible {
                 neighborsAdded++
             }
           } else {
-              if (debug) println("    ✗ Cannot continue straight (already 3 steps)")
+              if (debug) println("    ✗ Cannot continue straight (already ${maxSteps} steps)")
           }
 
-          // Turn left or right (always allowed, resets consecutive steps to 1)
-          for (CrucibleDirection newDir : [turnLeft(current.direction), turnRight(current.direction)]) {
-              int newRow = current.row + newDir.dr
-              int newCol = current.col + newDir.dc
-              if (inBounds(newRow, newCol)) {
-                  int newHeat = current.heatLoss + grid[newRow][newCol]
-                  queue.add(new CrucibleNode(newRow, newCol, newDir, 1, newHeat))
-                  if (debug) println("    → Turn to ${newDir}: (${newRow},${newCol}) heat=${newHeat}")
-                  neighborsAdded++
+          // Turn left or right (only if we've moved at least minSteps blocks)
+          if (current.consecutiveSteps >= minSteps) {
+              for (CrucibleDirection newDir : [turnLeft(current.direction), turnRight(current.direction)]) {
+                  int newRow = current.row + newDir.dr
+                  int newCol = current.col + newDir.dc
+                  if (inBounds(newRow, newCol)) {
+                      int newHeat = current.heatLoss + grid[newRow][newCol]
+                      queue.add(new CrucibleNode(newRow, newCol, newDir, 1, newHeat))
+                      if (debug) println("    → Turn to ${newDir}: (${newRow},${newCol}) heat=${newHeat}")
+                      neighborsAdded++
+                  }
               }
+          } else if (debug && ultraCrucible) {
+              println("    ✗ Cannot turn yet (only ${current.consecutiveSteps} steps, need ${minSteps})")
           }
 
           if (debug && neighborsAdded == 0) {
@@ -234,6 +285,10 @@ static void main(String[] args) {
         Integer result = crucible.findMinimumHeatLoss()
 
         println("Part 1: ${result}")
+
+        Integer result2 = crucible.findMinimumHeatLoss(true)
+
+        println("Part 2: ${result2}")
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
