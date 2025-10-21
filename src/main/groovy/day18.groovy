@@ -48,13 +48,40 @@ Now, the lagoon can contain a much more respectable 62 cubic meters of lava. Whi
 
 The Elves are concerned the lagoon won't be large enough; if they follow their dig plan, how many cubic meters of lava could it hold?
 
+--- Part Two ---
+The Elves were right to be concerned; the planned lagoon would be much too small.
+
+After a few minutes, someone realizes what happened; someone swapped the color and instruction parameters when producing the dig plan. They don't have time to fix the bug; one of them asks if you can extract the correct instructions from the hexadecimal codes.
+
+Each hexadecimal code is six hexadecimal digits long. The first five hexadecimal digits encode the distance in meters as a five-digit hexadecimal number. The last hexadecimal digit encodes the direction to dig: 0 means R, 1 means D, 2 means L, and 3 means U.
+
+So, in the above example, the hexadecimal codes can be converted into the true instructions:
+
+#70c710 = R 461937
+#0dc571 = D 56407
+#5713f0 = R 356671
+#d2c081 = D 863240
+#59c680 = R 367720
+#411b91 = D 266681
+#8ceee2 = L 577262
+#caa173 = U 829975
+#1b58a2 = L 112010
+#caa171 = D 829975
+#7807d2 = L 491645
+#a77fa3 = U 686074
+#015232 = L 5411
+#7a21e3 = U 500254
+Digging out this loop and its interior produces a lagoon that can hold an impressive 952408144115 cubic meters of lava.
+
+Convert the hexadecimal color codes into the correct instructions; if the Elves follow this new dig plan, how many cubic meters of lava could the lagoon hold?
+
  */
 
 class LagoonPosition {
-    int row
-    int col
+    long row
+    long col
 
-    LagoonPosition(int row, int col) {
+    LagoonPosition(long row, long col) {
         this.row = row
         this.col = col
     }
@@ -79,10 +106,10 @@ class LagoonPosition {
 
 class DigInstruction {
     String direction
-    int distance
+    long distance
     String color
 
-    DigInstruction(String direction, int distance, String color) {
+    DigInstruction(String direction, long distance, String color) {
         this.direction = direction
         this.distance = distance
         this.color = color
@@ -92,33 +119,53 @@ class DigInstruction {
 class LavaductLagoon {
     List<DigInstruction> instructions = []
 
-    LavaductLagoon(String input) {
+    LavaductLagoon(String input, Boolean swapParameters = false) {
         this.instructions = input.split('\n')
             .findAll { it.trim() } // Filter out empty lines
             .collect { line ->
                 def parts = line.trim().split(' ')
-                new DigInstruction(parts[0], parts[1] as Integer, parts[2].replaceAll(/[()]/, ''))
+                String direction = ""
+                long distance = 0
+                String color = ""
+                if (!swapParameters) {
+                    direction = parts[0]
+                    distance = parts[1] as Integer
+                    color = parts[2].replaceAll(/[()]/, '')
+                } else {
+                    String instructionString = parts[2].replaceAll(/[#()]/, '')
+                    String directionNumber = instructionString[5]
+                    if (directionNumber == "0") {
+                        direction = "R"
+                    } else if (directionNumber == "1") {
+                        direction = "D"
+                    } else if (directionNumber == "2") {
+                        direction = "L"
+                    } else if (directionNumber == "3") {
+                        direction = "U"
+                    }
+                    distance = Long.parseLong(instructionString.substring(0, 5), 16)
+                }
+                new DigInstruction(direction, distance, color)
             }
     }
 
     List<LagoonPosition> getLoop() {
         List<LagoonPosition> loop = []
-        int currentRow = 0
-        int currentCol = 0
+        long currentRow = 0
+        long currentCol = 0
+        loop.add(new LagoonPosition(currentRow, currentCol))
 
         for (DigInstruction instruction in instructions) {
-            for (int steps = 0; steps < instruction.distance; steps++) {
-                loop.add(new LagoonPosition(currentRow, currentCol))
-                if (instruction.direction == "L") {
-                    currentCol--
-                } else if (instruction.direction == "R") {
-                    currentCol++
-                } else if (instruction.direction == "U") {
-                    currentRow--
-                } else if (instruction.direction == "D") {
-                    currentRow++
-                }
+            if (instruction.direction == "L") {
+                currentCol -= instruction.distance
+            } else if (instruction.direction == "R") {
+                currentCol += instruction.distance
+            } else if (instruction.direction == "U") {
+                currentRow -= instruction.distance
+            } else if (instruction.direction == "D") {
+                currentRow += instruction.distance
             }
+            loop.add(new LagoonPosition(currentRow, currentCol))
         }
         return loop
     }
@@ -127,11 +174,12 @@ class LavaductLagoon {
         def diagonalSum = getDiagonalSum(loop)
         def diagonalSumReverse = getDiagonalSum(loop,true)
         def subtracted = diagonalSumReverse - diagonalSum
-        Math.abs(subtracted) / 2 as Integer // Area is the absolute value of half the difference
+        // Area is the absolute value of half the difference
+        Math.abs(subtracted) / 2 as Long
     }
 
     static def getDiagonalSum(def loop, def reverse = false) {
-        def result = 0
+        long result = 0
         for (int i = 0; i < loop.size(); i += 1) {
             int nextIndex = (int) ((i + 1) % loop.size()) // Ensure loop closure
             result += reverse ? loop[i].col * loop[nextIndex].row : loop[i].row * loop[nextIndex].col
@@ -142,7 +190,7 @@ class LavaductLagoon {
     long calculateLagoonVolume() {
         List<LagoonPosition> loop = getLoop()
         long area = getAreaOfLoop(loop)
-        long perimeter = loop.size()
+        long perimeter = instructions.sum { it.distance }
 
         // Pick's theorem: Total = Area + Perimeter/2 + 1
         // This accounts for both interior points and boundary points
@@ -160,6 +208,11 @@ static void main(String[] args) {
         long result = lagoon.calculateLagoonVolume()
 
         println("Part 1: ${result}")
+
+        LavaductLagoon lagoon2 = new LavaductLagoon(input, true)
+        long result2 = lagoon2.calculateLagoonVolume()
+
+        println("Part 2: ${result2}")
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)

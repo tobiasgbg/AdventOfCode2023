@@ -39,6 +39,14 @@ U 2 (#7a21e3)'''
         lagoon.calculateLagoonVolume() == 62
     }
 
+    def "example input calculates lagoon volume of 952408144115"() {
+        given:
+        LavaductLagoon lagoon = new LavaductLagoon(EXAMPLE_INPUT, true)
+
+        expect:
+        lagoon.calculateLagoonVolume() == 952408144115
+    }
+
     def "simple square lagoon"() {
         given:
         def input = '''R 2 (#000000)
@@ -60,20 +68,24 @@ L 2 (#000000)
 U 2 (#000000)'''
         LavaductLagoon lagoon = new LavaductLagoon(input)
         List<LagoonPosition> expected = []
-        expected.add(new LagoonPosition(0,0))
-        expected.add(new LagoonPosition(0,1))
-        expected.add(new LagoonPosition(0,2))
-
-        expected.add(new LagoonPosition(1,2))
-        expected.add(new LagoonPosition(2,2))
-
-        expected.add(new LagoonPosition(2,1))
-        expected.add(new LagoonPosition(2,0))
-
-        expected.add(new LagoonPosition(1,0))
+        // Only vertices (corners) are stored now
+        expected.add(new LagoonPosition(0,0))  // start
+        expected.add(new LagoonPosition(0,2))  // after R 2
+        expected.add(new LagoonPosition(2,2))  // after D 2
+        expected.add(new LagoonPosition(2,0))  // after L 2
+        expected.add(new LagoonPosition(0,0))  // after U 2 (back to start)
 
         expect:
         lagoon.getLoop() == expected
+    }
+
+    def "convert instruction"() {
+        given:
+        LavaductLagoon lagoon = new LavaductLagoon(EXAMPLE_INPUT, true)
+
+        expect:
+        lagoon.instructions[0].direction == 'R'
+        lagoon.instructions[0].distance == 461937
     }
 
     def "simple rectangle lagoon"() {
