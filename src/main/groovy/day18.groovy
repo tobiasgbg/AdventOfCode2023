@@ -77,124 +77,77 @@ Convert the hexadecimal color codes into the correct instructions; if the Elves 
 
  */
 
+@groovy.transform.Canonical
 class LagoonPosition {
     long row
     long col
-
-    LagoonPosition(long row, long col) {
-        this.row = row
-        this.col = col
-    }
-
-    @Override
-    boolean equals(Object other) {
-        if (!(other instanceof LagoonPosition)) return false
-        LagoonPosition c = (LagoonPosition) other
-        return row == c.row && col == c.col
-    }
-
-    @Override
-    int hashCode() {
-        return Objects.hash(row, col)
-    }
-
-    @Override
-    String toString() {
-        return "(${row},${col})"
-    }
 }
 
+@groovy.transform.Canonical
 class DigInstruction {
     String direction
     long distance
     String color
-
-    DigInstruction(String direction, long distance, String color) {
-        this.direction = direction
-        this.distance = distance
-        this.color = color
-    }
 }
 
 class LavaductLagoon {
     List<DigInstruction> instructions = []
+    static final DIRECTION_MAP = ['0':'R', '1':'D', '2':'L', '3':'U']
 
     LavaductLagoon(String input, Boolean swapParameters = false) {
         this.instructions = input.split('\n')
-            .findAll { it.trim() } // Filter out empty lines
+            .findAll { it.trim() }
             .collect { line ->
                 def parts = line.trim().split(' ')
-                String direction = ""
-                long distance = 0
-                String color = ""
-                if (!swapParameters) {
-                    direction = parts[0]
-                    distance = parts[1] as Integer
-                    color = parts[2].replaceAll(/[()]/, '')
-                } else {
-                    String instructionString = parts[2].replaceAll(/[#()]/, '')
-                    String directionNumber = instructionString[5]
-                    if (directionNumber == "0") {
-                        direction = "R"
-                    } else if (directionNumber == "1") {
-                        direction = "D"
-                    } else if (directionNumber == "2") {
-                        direction = "L"
-                    } else if (directionNumber == "3") {
-                        direction = "U"
-                    }
-                    distance = Long.parseLong(instructionString.substring(0, 5), 16)
-                }
+                def (direction, distance, color) = swapParameters ? parseHex(parts) : parseNormal(parts)
                 new DigInstruction(direction, distance, color)
             }
     }
 
+    private static parseNormal(String[] parts) {
+        [parts[0], parts[1] as long, parts[2].replaceAll(/[()]/, '')]
+    }
+
+    private static parseHex(String[] parts) {
+        def hex = parts[2].replaceAll(/[#()]/, '')
+        [DIRECTION_MAP[hex[5]], Long.parseLong(hex[0..4], 16), '']
+    }
+
     List<LagoonPosition> getLoop() {
-        List<LagoonPosition> loop = []
+        def deltas = ['U': [-1, 0], 'D': [1, 0], 'L': [0, -1], 'R': [0, 1]]
         long currentRow = 0
         long currentCol = 0
-        loop.add(new LagoonPosition(currentRow, currentCol))
+        def loop = [new LagoonPosition(currentRow, currentCol)]
 
-        for (DigInstruction instruction in instructions) {
-            if (instruction.direction == "L") {
-                currentCol -= instruction.distance
-            } else if (instruction.direction == "R") {
-                currentCol += instruction.distance
-            } else if (instruction.direction == "U") {
-                currentRow -= instruction.distance
-            } else if (instruction.direction == "D") {
-                currentRow += instruction.distance
-            }
-            loop.add(new LagoonPosition(currentRow, currentCol))
+        instructions.each { instruction ->
+            def (dr, dc) = deltas[instruction.direction]
+            currentRow += dr * instruction.distance
+            currentCol += dc * instruction.distance
+            loop << new LagoonPosition(currentRow, currentCol)
         }
-        return loop
+
+        loop
     }
 
-    static def getAreaOfLoop(def loop) {
-        def diagonalSum = getDiagonalSum(loop)
-        def diagonalSumReverse = getDiagonalSum(loop,true)
-        def subtracted = diagonalSumReverse - diagonalSum
-        // Area is the absolute value of half the difference
-        Math.abs(subtracted) / 2 as Long
-    }
-
-    static def getDiagonalSum(def loop, def reverse = false) {
-        long result = 0
-        for (int i = 0; i < loop.size(); i += 1) {
-            int nextIndex = (int) ((i + 1) % loop.size()) // Ensure loop closure
-            result += reverse ? loop[i].col * loop[nextIndex].row : loop[i].row * loop[nextIndex].col
+    static long getAreaOfLoop(List<LagoonPosition> loop) {
+        def sum1 = loop.withIndex().sum { pos, i ->
+            def next = loop[(i + 1) % loop.size()]
+            pos.row * next.col
         }
-        result
+        def sum2 = loop.withIndex().sum { pos, i ->
+            def next = loop[(i + 1) % loop.size()]
+            pos.col * next.row
+        }
+        Math.abs(sum2 - sum1) / 2
     }
 
     long calculateLagoonVolume() {
-        List<LagoonPosition> loop = getLoop()
-        long area = getAreaOfLoop(loop)
-        long perimeter = instructions.sum { it.distance }
+        def loop = getLoop()
+        def area = getAreaOfLoop(loop)
+        def perimeter = instructions.sum { it.distance }
 
         // Pick's theorem: Total = Area + Perimeter/2 + 1
-        // This accounts for both interior points and boundary points
-        return area + (perimeter / 2) + 1
+        area + perimeter / 2 + 1
     }
 }
 
