@@ -102,4 +102,12 @@ hdj{m>838:A,pv}
         expect:
         aplenty.sumAcceptedRatings() == 19114
     }
+
+    def "example input distinct combinations is 167409079868000"() {
+        given:
+        Aplenty aplenty = new Aplenty(EXAMPLE_INPUT)
+
+        expect:
+        aplenty.countAcceptedCombinations() == 167409079868000L
+    }
 }

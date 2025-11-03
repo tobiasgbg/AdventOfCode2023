@@ -50,6 +50,17 @@ Ultimately, three parts are accepted. Adding up the x, m, a, and s rating for ea
 
 Sort through all of the parts you've been given; what do you get if you add together all of the rating numbers for all of the parts that ultimately get accepted?
 
+--- Part Two ---
+Even with your help, the sorting process still isn't fast enough.
+
+One of the Elves comes up with a new plan: rather than sort parts individually through all of these workflows, maybe you can figure out in advance which combinations of ratings will be accepted or rejected.
+
+Each of the four ratings (x, m, a, s) can have an integer value ranging from a minimum of 1 to a maximum of 4000. Of all possible distinct combinations of ratings, your job is to figure out which ones will be accepted.
+
+In the above example, there are 167409079868000 distinct combinations of ratings that will be accepted.
+
+Consider only your list of workflows; the list of part ratings that the Elves wanted you to sort is no longer relevant. How many distinct combinations of ratings will be accepted by the Elves' workflows?
+
  */
 
 @groovy.transform.Canonical
@@ -83,6 +94,81 @@ class Workflow {
     List<Rule> rules
 }
 
+@groovy.transform.Canonical
+class Range implements Cloneable {
+    int minX = 1, maxX = 4000
+    int minM = 1, maxM = 4000
+    int minA = 1, maxA = 4000
+    int minS = 1, maxS = 4000
+
+    Range clone() {
+        new Range(minX: minX, maxX: maxX, minM: minM, maxM: maxM,
+                  minA: minA, maxA: maxA, minS: minS, maxS: maxS)
+    }
+
+    long combinations() {
+          if (!isValid()) return 0
+          (long)(maxX - minX + 1) * (maxM - minM + 1) *
+                (maxA - minA + 1) * (maxS - minS + 1)
+      }
+
+      boolean isValid() {
+          minX <= maxX && minM <= maxM && minA <= maxA && minS <= maxS
+      }
+
+      // Returns [matching range, non-matching range]
+      List<Range> split(String property, String operator, int value) {
+          Range matching = this.clone()
+          Range nonMatching = this.clone()
+
+          if (operator == '<') {
+              // matching: property < value  -> [min, value-1]
+              // non-matching: property >= value -> [value, max]
+              switch(property) {
+                  case 'x':
+                      matching.maxX = Math.min(matching.maxX, value - 1)
+                      nonMatching.minX = Math.max(nonMatching.minX, value)
+                      break
+                  case 'm':
+                      matching.maxM = Math.min(matching.maxM, value - 1)
+                      nonMatching.minM = Math.max(nonMatching.minM, value)
+                      break
+                  case 'a':
+                      matching.maxA = Math.min(matching.maxA, value - 1)
+                      nonMatching.minA = Math.max(nonMatching.minA, value)
+                      break
+                  case 's':
+                      matching.maxS = Math.min(matching.maxS, value - 1)
+                      nonMatching.minS = Math.max(nonMatching.minS, value)
+                      break
+              }
+          } else { // operator == '>'
+              // matching: property > value -> [value+1, max]
+              // non-matching: property <= value -> [min, value]
+              switch(property) {
+                  case 'x':
+                      matching.minX = Math.max(matching.minX, value + 1)
+                      nonMatching.maxX = Math.min(nonMatching.maxX, value)
+                      break
+                  case 'm':
+                      matching.minM = Math.max(matching.minM, value + 1)
+                      nonMatching.maxM = Math.min(nonMatching.maxM, value)
+                      break
+                  case 'a':
+                      matching.minA = Math.max(matching.minA, value + 1)
+                      nonMatching.maxA = Math.min(nonMatching.maxA, value)
+                      break
+                  case 's':
+                      matching.minS = Math.max(matching.minS, value + 1)
+                      nonMatching.maxS = Math.min(nonMatching.maxS, value)
+                      break
+              }
+          }
+
+          [matching, nonMatching]
+      }
+}
+
 class Aplenty {
     Map<String, Workflow> workflows = [:]
     List<Part> parts = []
@@ -91,6 +177,46 @@ class Aplenty {
         def sections = input.split(/\r?\n\r?\n/)  // Handle both Unix and Windows line endings
         parseWorkflows(sections[0])
         parseParts(sections[1])
+    }
+
+    long countAcceptedCombinations() {
+        Range initialRange = new Range()
+        return processRange(initialRange, "in")
+    }
+
+    private long processRange(Range range, String workflowName) {
+        if (!range.isValid()) return 0
+
+        // Base cases
+        if (workflowName == "A") return range.combinations()
+        if (workflowName == "R") return 0
+
+        // Process through workflow
+        Workflow workflow = workflows[workflowName]
+        long total = 0
+        Range currentRange = range.clone()
+
+        for (Rule rule in workflow.rules) {
+            if (rule.condition == null) {
+                // Default rule - process entire remaining range
+                total += processRange(currentRange, rule.destination)
+                break
+            } else {
+                // Conditional rule - split the range
+                def matcher = rule.condition =~ /(\w)([<>])(\d+)/
+                def (property, operator, value) = [matcher[0][1], matcher[0][2], matcher[0][3] as int]
+
+                def (matching, nonMatching) = currentRange.split(property, operator, value)
+
+                // Process the matching part with this rule's destination
+                total += processRange(matching, rule.destination)
+
+                // Continue with non-matching part to next rule
+                currentRange = nonMatching
+            }
+        }
+
+        return total
     }
 
     private void parseWorkflows(String workflowSection) {
@@ -150,8 +276,10 @@ static void main(String[] args) {
 
         Aplenty aplenty = new Aplenty(input)
         int result = aplenty.sumAcceptedRatings()
+        long combinations = aplenty.countAcceptedCombinations()
 
         println("Part 1: ${result}")
+        println("Part 2: ${combinations}")
 
     } catch (FileNotFoundException e) {
         println("File not found: " + e.message)
